@@ -1,17 +1,7 @@
-import { renderTemplate, clearScreen, sleep } from './utils.js'
+import { renderTemplate, clearScreen, sleep, prefetchAudioFile, play } from './utils.js'
 import store from './store.js'
 import debug from './debug.js'
 import Recording from './recorder.js'
-
-
-function play (n) {
-  return new Promise(resolve => {
-    const audio = new Audio(`/static/assets/episodes/MAE-${n}.ogg`)
-    console.log(`READING: MAE-${n}.ogg`)
-    audio.addEventListener('canplaythrough', () => audio.play())
-    audio.addEventListener('ended', resolve)
-  })
-}
 
 
 function displayIntro () {
@@ -24,10 +14,9 @@ function displayIntro () {
 
 async function playEpisode () {
   renderTemplate('player')
-  // get ep before defining next one
-  const ep = store.episode
+  const episode = await prefetchAudioFile(`/episodes/AEM-${store.episode}.ogg`)
   store.defineNextEpisodeDate()
-  return play(ep)
+  return play(episode, debug.active)
 }
 
 
@@ -72,7 +61,6 @@ function displayGarden () {
 
 window.onload = async () => {
   await store.init()
-  store.displayDelayToWait()
   debug.displayDelayToWait()
 
   if (store.canPlayEpisode) {

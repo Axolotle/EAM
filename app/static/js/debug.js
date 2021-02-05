@@ -1,6 +1,8 @@
 import store from './store.js'
 
 export default {
+  active: true,
+
   fracDayToString (delay) {
     const days = Math.floor(delay)
     const hoursFrac = (delay - days) * 24
@@ -12,6 +14,8 @@ export default {
   },
 
   displayDelaySetup (today, date, delay) {
+    if (!this.active) return
+
     if (store.episode > 4) {
       console.log(`
 C'était le dernier épisode.
@@ -27,6 +31,8 @@ Alors l'épisode sera dispo le ${date.toLocaleString()}.
   },
 
   displayDelayToWait () {
+    if (!this.active) return
+
     const date = store.nextEpDate
     const today = new Date()
     const delay = (date - today) / 3600000 / 24

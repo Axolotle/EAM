@@ -24,13 +24,41 @@ export function renderTemplate (templateId, { data, select, selectAll } = {}) {
   return main
 }
 
+
 export function formatText (textArr) {
   return `<p>${textArr.join('<br>')}</p>`
 }
 
+
 export function clearScreen () {
   const main = document.querySelector('main div')
   main.innerHTML = ''
+}
+
+
+export function prefetchAudioFile (uri) {
+  return new Promise(resolve => {
+    const audio = new Audio('/static/assets' + uri)
+    audio.addEventListener('canplaythrough', resolve(audio))
+  })
+}
+
+
+export async function play (audio, skip = false) {
+  return new Promise(resolve => {
+    if (skip) {
+      const onKeyDown = ({ key }) => {
+        if (key === 'ArrowRight') {
+          window.removeEventListener('keydown', onKeyDown)
+          audio.pause()
+          resolve()
+        }
+      }
+      window.addEventListener('keydown', onKeyDown)
+    }
+    audio.addEventListener('ended', resolve)
+    audio.play()
+  })
 }
 
 
