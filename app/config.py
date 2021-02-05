@@ -14,3 +14,6 @@ configs = {
 class Config:
     ENV = os.getenv('FLASK_ENV', 'development')
     SECRET_KEY = os.getenv('SECRET_KEY', 'dev')
+
+    # Custom
+    UPLOAD_ROUTE = os.getenv('UPLOAD_ROUTE', '/upload')

@@ -4,7 +4,7 @@ import threading
 from flask import Flask
 
 from app.config import configs
-from app.routes import home
+from app.routes import home, upload
 
 
 def create_app(config_name='development'):
@@ -21,3 +21,4 @@ def create_app(config_name='development'):
 
 def register_blueprints(app):
     app.register_blueprint(home.bp)
+    app.register_blueprint(upload.bp, url_prefix=app.config['UPLOAD_ROUTE'])
