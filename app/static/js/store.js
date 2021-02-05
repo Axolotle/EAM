@@ -1,4 +1,5 @@
-import { formatText, fracDayToString } from './utils.js'
+import { formatText } from './utils.js'
+import debug from './debug.js'
 
 export default {
   record_timer: 10000,
@@ -43,7 +44,8 @@ export default {
     const date = new Date(today + delay * 3600000)
     this.nextEpDate = date
     this.episode++
-    this.displayDelaySetup(new Date(today), date, delay / 24)
+
+    debug.displayDelaySetup(new Date(today), date, delay / 24)
   },
 
   // INIT
@@ -65,45 +67,5 @@ export default {
         resolve()
       })
     })
-  },
-
-  // DEBUG/CHECK
-
-  displayDelaySetup (today, date, delay) {
-    if (this.episode > 4) {
-      console.log(`
-C'était le dernier épisode.
-      `)
-    } else {
-      console.log(`
-Le prochain episode sera le numéro "${this.episode}".
-Il sera disponible dans ${fracDayToString(delay)}.
-Nous sommes le ${today.toLocaleString()}.
-Alors l'épisode sera dispo le ${date.toLocaleString()}.
-      `)
-    }
-  },
-
-  displayDelayToWait () {
-    const date = this.nextEpDate
-    const today = new Date()
-    const delay = (date - today) / 3600000 / 24
-    const nextContent = `Le prochain episode est le numéro "${this.episode}".`
-    if (this.episode > 4) {
-      console.log(`
-Vous avez écouté tous les épisodes.
-      `)
-    } else if (delay <= 0) {
-      console.log(`
-${nextContent}
-      `)
-    } else {
-      console.log(`
-${nextContent}
-Il sera disponible dans ${fracDayToString(delay)}.
-Nous sommes le ${today.toLocaleString()}.
-Alors l'épisode sera dispo le ${date.toLocaleString()}.
-      `)
-    }
   }
 }

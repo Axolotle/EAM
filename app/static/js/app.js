@@ -1,5 +1,6 @@
 import { renderTemplate, clearScreen, sleep } from './utils.js'
 import store from './store.js'
+import debug from './debug.js'
 import Recording from './recorder.js'
 
 
@@ -72,6 +73,7 @@ function displayGarden () {
 window.onload = async () => {
   await store.init()
   store.displayDelayToWait()
+  debug.displayDelayToWait()
 
   if (store.canPlayEpisode) {
     await displayIntro()

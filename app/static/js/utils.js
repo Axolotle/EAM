@@ -33,16 +33,7 @@ export function clearScreen () {
   main.innerHTML = ''
 }
 
+
 export function sleep (ms = 1000) {
   return new Promise(resolve => setTimeout(resolve, ms))
-}
-
-export function fracDayToString (delay) {
-  const days = Math.floor(delay)
-  const hoursFrac = (delay - days) * 24
-  const hours = Math.floor(hoursFrac)
-  const minsFrac = (hoursFrac - hours) * 60
-  const mins = Math.floor(minsFrac)
-  const secs = Math.round((minsFrac - mins) * 60)
-  return `${days} j, ${hours} h, ${mins} m, ${secs} s`
 }
