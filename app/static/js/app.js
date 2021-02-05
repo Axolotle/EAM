@@ -16,7 +16,10 @@ async function playEpisode () {
   renderTemplate('player')
   const episode = await prefetchAudioFile(`/episodes/AEM-${store.episode}.ogg`)
   store.defineNextEpisodeDate()
-  return play(episode, debug.active)
+  return Promise.all([
+    prefetchAudioFile('/misc/loop.ogg'),
+    play(episode, debug.active)
+  ]).then(([loop]) => loop)
 }
 
 
@@ -67,7 +70,8 @@ window.onload = async () => {
     await displayIntro()
     clearScreen()
     await sleep(1000)
-    await playEpisode()
+    const loop = await playEpisode()
+    loop.play()
 
     const recording = await displayRecorder()
     if (recording) {
