@@ -1,0 +1,229 @@
+{
+    "episodes": {
+        "0": [
+            [
+                "Tu montes à pieds les douze étages",
+                "puis grimpes les douze échelons",
+                "maçonnés dans le puits d'accès.",
+                "La trappe n'est jamais fermée.",
+                "Tu la repousses,",
+                "l'air est frais et gris.",
+                "Tu te hisses sur le toit."
+            ],
+            [
+                "La ville,",
+                "jusqu'à l'horizon",
+                "est vide."
+            ],
+            [
+                "La ville est silencieuse."
+            ],
+            [
+                "Le revêtement est de toile goudronnée.",
+                "et tu marches sur de petits graviers",
+                "arrivés là tu ne sais trop comment.",
+                "Le vent souffle."
+            ],
+            [
+                "Le récepteur est toujours en place,",
+                "avec ses câbles et ses bâches,",
+                "avec ses antennes plantées dans tout sens,",
+                "ses antennes hérissées vers le ciel."
+            ],
+            [
+                "En approchant,",
+                "tu vois la diode verte qui clignote",
+                "et tu crois d'abord à une erreur,",
+                "te dis que la tempête a déréglé la machine,",
+                "qu'il va te falloir la réparer, la régler, la relancer."
+            ],
+            [
+                "Tu dois bientôt te rendre l'évidence."
+            ],
+            [
+                "Ca s'est produit.",
+                "Enfin."
+            ],
+            [
+                "Tu as capté quelque chose.",
+                "Tu as reçu un message."
+            ]
+        ],
+
+        "1": [
+            [
+                "Tu montes les douze étages à pieds,",
+                "puis te hisse le long de l'échelle d'accès,",
+                "verticale, aux barreaux d'aluminium."
+            ],
+            [
+                "La trappe s'ouvre sans difficulté."
+            ],
+            [
+                "Le vent souffle sur le toit",
+                "et froisse les bâches du récepteur."
+            ],
+            [
+                "Tu essaies de ne pas te précipiter.",
+                "Ne pas vérifier tout de suite",
+                "si la diode verte clignote,",
+                "si la machine à capté quelque chose."
+            ],
+            [
+                "Tu regardes les immeubles autour de toi,",
+                "les proches, les lointains,",
+                "les espaces derrières les portes,",
+                "les fenêtres,",
+                "toutes ces alvéoles vides,",
+                "tout ce silence."
+            ],
+            [
+                "Tu as attendu si longtemps."
+            ],
+            [
+                "La led pulse en vert."
+            ],
+            [
+                "Quelqu'un va te parler."
+            ]
+        ],
+
+        "2": [
+            [
+                "Tu montes les douze étages deux par deux, sans trop y penser,",
+                "avant de t'en rendre compte, tu es déjà dans le puits",
+                "à grimper les douze barreaux de l'échelle,",
+                "tu es déjà sur le toit."
+            ],
+            [
+                "Le ciel est de plein de gris différents,",
+                "lourd de pluie et de lumière."
+            ],
+            [
+                "Il ne garde aucune trace des messages qui le traversent.",
+                "Aucune piste.",
+                "Mais il bouge lentement,",
+                "enfle, avance, tourne."
+            ],
+            [
+                "La ville, elle, est tout à fait figée."
+            ],
+            [
+                "Tu as repéré de loin la diode qui clignote."
+            ],
+            [
+                "Le nouveau message, enfin.",
+                "La voix va te parler."
+            ]
+        ],
+
+        "3": [
+            [
+                "Tu montes à pieds les douze étages et,",
+                "sur chaque palier,",
+                "devant chaque porte ouverte",
+                "donnant sur un appartement vide,",
+                "tu imagines les voix, les bruits d'avant,",
+                "conversations, lave-linge, cuisinière,",
+                "cavalcade d'enfants, musique, radio,",
+                "appels téléphoniques."
+            ],
+            [
+                "Et puis tu montes l'échelle",
+                "avec ses douze barreaux de fer,",
+                "tu repousses la trappe,",
+                "tu regardes la ville,",
+                "ta ville,",
+                "ton île déserte."
+            ],
+            [
+                "Le récepteur est ton lien",
+                "vers un autre monde,",
+                "un pont."
+            ],
+            [
+                "La diode qui clignote",
+                "fait accélérer ton cœur."
+            ],
+            [
+                "Ce n'est qu'un tout petit feu dans la nuit",
+                "mais c'est une grande promesse.",
+                "Tu n'es pas seul."
+            ]
+        ],
+
+        "4": [
+            [
+                "Tu montes",
+                "les douze",
+                "étages,",
+                "les douze",
+                "barreaux,",
+                "tu pousses",
+                "la trappe."
+            ],
+            [
+                "Tu as rêvé",
+                "à la voix,",
+                "et au réveil",
+                "de la ville,",
+                "mille lumières",
+                "dans mille logis,",
+                "des gens partout",
+                "aux fenêtres,",
+                "dans les rues,",
+                "sur les toits."
+            ],
+            [
+                "Tu as rêvé",
+                "à des corps,",
+                "à des visages,",
+                "à des sourires,",
+                "à des foules,",
+                "des retrouvailles."
+            ],
+            [
+                "Le récepteur",
+                "est un amas de câbles,",
+                "d'antennes de métal,",
+                "de circuits imprimés,",
+                "de bâches plastiques",
+                "de leds de couleur."
+            ],
+            [
+                "La diode verte",
+                "clignote encore",
+                "pour toi",
+                "une dernière fois."
+            ]
+        ]
+    },
+
+    "acknowledgment": [
+        "Si tu envoies ce message,",
+        "d'autres que toi,",
+        "où qu'ils se trouvent.",
+        "pourront l'entendre."
+    ],
+
+    "after_last_ep": [
+        "Tu redescends,",
+        "fermes la trappe,",
+        "douze barreaux,",
+        "douze étages,",
+        "puis plus bas encore,",
+        "le rez-de-chaussée,",
+        "le hall,",
+        "la grande porte,",
+        "il y a de la lumière,",
+        "dehors,",
+        "tu devines des bruits",
+        "ou bien les imagines,",
+        "il est temps maintenant,",
+        "tu continues,",
+        "tu avances,",
+        "tu pousses la porte",
+        "et tu sors,",
+        "dans le monde."
+    ]
+}
