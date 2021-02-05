@@ -46,7 +46,7 @@
             ],
             [
                 "Tu as capté quelque chose.",
-                "Tu as reçu un message."
+                "<a href='#'>Tu as reçu un message.</a>"
             ]
         ],
 
@@ -84,7 +84,7 @@
                 "La led pulse en vert."
             ],
             [
-                "Quelqu'un va te parler."
+                "<a href='#'>Quelqu'un va te parler.</a>"
             ]
         ],
 
@@ -113,7 +113,7 @@
             ],
             [
                 "Le nouveau message, enfin.",
-                "La voix va te parler."
+                "<a href='#'>La voix va te parler.</a>"
             ]
         ],
 
@@ -148,7 +148,7 @@
             [
                 "Ce n'est qu'un tout petit feu dans la nuit",
                 "mais c'est une grande promesse.",
-                "Tu n'es pas seul."
+                "<a href='#'>Tu n'es pas seul.</a>"
             ]
         ],
 
@@ -193,7 +193,7 @@
             [
                 "La diode verte",
                 "clignote encore",
-                "pour toi",
+                "<a href='#'>pour toi</a>",
                 "une dernière fois."
             ]
         ]
@@ -206,7 +206,7 @@
         "pourront l'entendre."
     ],
 
-    "after_last_ep": [
+    "streetIntro": [
         "Tu redescends,",
         "fermes la trappe,",
         "douze barreaux,",

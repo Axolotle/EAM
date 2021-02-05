@@ -1,0 +1,62 @@
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  height: 100%;
+}
+
+body {
+  background-color: black;
+  color: white;
+}
+
+main {
+  width: 100%;
+  height: 100%;
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+a, a:visited, a:active, a:focus {
+  color: white;
+}
+
+#record-btn {
+  width: 60px;
+  border: none;
+  height: 60px;
+  background-color: red;
+  border-radius: 30px;
+  color: white;
+  font: inherit;
+  cursor: pointer;
+}
+
+.btn {
+  height: 30px;
+  line-height: 30px;
+  margin-right: 1rem;
+}
+
+.w-100 {
+  width: 100%;
+}
+
+.hidden {
+  display: none;
+}
+
+/* temp */
+audio {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+}

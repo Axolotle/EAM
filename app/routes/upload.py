@@ -11,7 +11,7 @@ def upload():
     assets_path = os.path.join(current_app.root_path, 'static', 'assets')
     file = request.files.get('file')
     filename = time.strftime('%Y%m%d-%Hh%Mm%Ss') + '.ogg'
-    filepath = os.path.join(assets_path, 'contributiosns', filename)
+    filepath = os.path.join(assets_path, 'contributions', filename)
     try:
         file.save(filepath)
     except:
