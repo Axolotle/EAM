@@ -36,26 +36,28 @@ export function clearScreen () {
 }
 
 
-export function prefetchAudioFile (uri) {
+export function waitForClick (btn) {
+  return new Promise(resolve => {
+    btn.onclick = () => resolve()
+  })
+}
+
+
+export function prefetchAudioFile (uri, presets) {
   return new Promise(resolve => {
     const audio = new Audio('/static/assets' + uri)
+    if (presets) {
+      for (const preset in presets) {
+        audio[preset] = presets[preset]
+      }
+    }
     audio.addEventListener('canplaythrough', resolve(audio))
   })
 }
 
 
-export async function play (audio, skip = false) {
+export async function play (audio) {
   return new Promise(resolve => {
-    if (skip) {
-      const onKeyDown = ({ key }) => {
-        if (key === 'ArrowRight') {
-          window.removeEventListener('keydown', onKeyDown)
-          audio.pause()
-          resolve()
-        }
-      }
-      window.addEventListener('keydown', onKeyDown)
-    }
     audio.addEventListener('ended', resolve)
     audio.play()
   })

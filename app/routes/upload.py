@@ -8,6 +8,7 @@ bp = Blueprint('upload', __name__)
 
 @bp.route('/', methods=['POST'])
 def upload():
+    return ('NOPE', 500)
     assets_path = os.path.join(current_app.root_path, 'static', 'assets')
     file = request.files.get('file')
     filename = time.strftime('%Y%m%d-%Hh%Mm%Ss') + '.ogg'

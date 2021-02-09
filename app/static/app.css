@@ -60,3 +60,10 @@ audio {
   left: 0;
   width: 100%;
 }
+
+.debug {
+  color: red;
+}
+.debug a {
+  color: red;
+}

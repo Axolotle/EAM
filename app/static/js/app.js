@@ -13,12 +13,15 @@ function displayIntro () {
 
 
 async function playEpisode () {
-  renderTemplate('player')
+  const btn = renderTemplate('player', { select: 'a' })
   const episode = await prefetchAudioFile(`/episodes/AEM-${store.episode}.ogg`)
   store.defineNextEpisodeDate()
+
+  debug.allowSkip(episode, btn)
+
   return Promise.all([
-    prefetchAudioFile('/misc/loop.ogg'),
-    play(episode, debug.active)
+    prefetchAudioFile('/misc/loop.ogg', { loop: true }),
+    play(episode)
   ]).then(([loop]) => loop)
 }
 
@@ -42,10 +45,10 @@ function displayRecording (recording) {
   return new Promise(resolve => {
     const [uploadBtn, continueBtn] = renderTemplate('confirm-upload', { selectAll: 'a', data: store })
 
-    // temp
-    const player = recording.getPlayer()
-    document.querySelector('main div div').appendChild(player)
-    // endtemp
+    if (debug.active) {
+      const player = recording.getPlayer()
+      document.querySelector('main div div').appendChild(player)
+    }
 
     uploadBtn.onclick = () => {
       recording.upload()
@@ -64,7 +67,8 @@ function displayGarden () {
 
 window.onload = async () => {
   await store.init()
-  debug.displayDelayToWait()
+  debug.displayDelayToWaitInConsole()
+  debug.listenForReset()
 
   if (store.canPlayEpisode) {
     await displayIntro()
@@ -83,5 +87,6 @@ window.onload = async () => {
     displayGarden()
   } else {
     clearScreen()
+    debug.displayDelayToWait()
   }
 }

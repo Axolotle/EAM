@@ -2,8 +2,8 @@ import { formatText } from './utils.js'
 import debug from './debug.js'
 
 export default {
-  record_timer: 10000,
-  delayMultiplier: 0.005, // real multiplier => 7 * 24
+  record_timer: debug.active ? 2000 : 60000,
+  delayMultiplier: 7 * 24,
   // json data
   episodes: null,
   acknowledgment: null,
