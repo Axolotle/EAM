@@ -2,6 +2,7 @@ import store from './store.js'
 
 export default {
   active: window.location.pathname === '/debug',
+  svg: null,
 
   fracDayToString (delay) {
     const days = Math.floor(delay)
@@ -92,6 +93,35 @@ Alors l'épisode sera dispo le ${date.toLocaleString()}.<br>
     btn.parentElement.classList.remove('hidden')
     btn.onclick = () => {
       audio.currentTime = audio.duration - 10
+    }
+  },
+
+  // SVG Sound rendering
+
+  initSvg (svg) {
+    if (!this.active) return
+
+    this.svg = svg
+    svg.style.display = 'block'
+  },
+
+  getSVGElem (name, attrs) {
+    const elem = document.createElementNS('http://www.w3.org/2000/svg', name)
+    for (const attr in attrs) {
+      elem.setAttribute(attr, attrs[attr])
+    }
+    return elem
+  },
+
+  displaySvg (messages) {
+    if (!this.active) return
+
+    this.svg.innerHTML = ''
+    this.svg.appendChild(this.getSVGElem('circle', { cx: 35, cy: 0, r: 1, fill: 'blue' }))
+
+    for (const msg of messages) {
+      this.svg.appendChild(this.getSVGElem('circle', { cx: 35, cy: -1 * msg.pos, r: 1, fill: 'red' }))
+      this.svg.appendChild(this.getSVGElem('circle', { cx: 35, cy: -1 * msg.pos, r: 30, fill: 'none', stroke: 'red', 'stroke-width': 0.1 }))
     }
   }
 }

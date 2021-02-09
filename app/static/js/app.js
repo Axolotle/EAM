@@ -1,7 +1,8 @@
-import { renderTemplate, clearScreen, sleep, prefetchAudioFile, play } from './utils.js'
+import { renderTemplate, clearScreen, sleep, prefetchAudioFile, waitForClick, play } from './utils.js'
 import store from './store.js'
 import debug from './debug.js'
 import Recording from './recorder.js'
+import Street from './street.js'
 
 
 function displayIntro () {
@@ -59,9 +60,17 @@ function displayRecording (recording) {
 }
 
 
-function displayGarden () {
+async function displayStreet () {
   console.log('Vous pouvez accéder au jardin.')
-  renderTemplate('garden')
+  const loop = await prefetchAudioFile('/misc/loop.ogg', { loop: true })
+  const [btn, svg] = renderTemplate('garden', { selectAll: 'a, svg' })
+
+  debug.initSvg(svg)
+
+  await waitForClick(btn)
+  loop.play()
+  const street = new Street()
+  await street.init()
 }
 
 
@@ -84,7 +93,7 @@ window.onload = async () => {
   }
 
   if (store.episode > 4) {
-    displayGarden()
+    displayStreet()
   } else {
     clearScreen()
     debug.displayDelayToWait()
