@@ -5,5 +5,5 @@ node_modules
 .env
 package-lock.json
 
-app/static/assets/*/*
-!app/static/assets/*/.gitkeep
+api/static/assets/*/*
+!api/static/assets/*/.gitkeep
