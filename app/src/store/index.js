@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import episode from './episode.js'
+import contrib from './contrib.js'
+
 
 Vue.use(Vuex)
 
@@ -43,6 +45,7 @@ export default new Vuex.Store({
   },
 
   modules: {
-    episode
+    episode,
+    contrib
   }
 })
