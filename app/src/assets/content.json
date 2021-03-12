@@ -46,7 +46,7 @@
             ],
             [
                 "Tu as capté quelque chose.",
-                "<a href='#'>Tu as reçu un message.</a>"
+                [{ "a": "Tu as reçu un message." }]
             ]
         ],
 
@@ -84,7 +84,7 @@
                 "La led pulse en vert."
             ],
             [
-                "<a href='#'>Quelqu'un va te parler.</a>"
+                [{ "a": "Quelqu'un va te parler." }]
             ]
         ],
 
@@ -113,7 +113,7 @@
             ],
             [
                 "Le nouveau message, enfin.",
-                "<a href='#'>La voix va te parler.</a>"
+                [{ "a": "La voix va te parler." }]
             ]
         ],
 
@@ -148,7 +148,7 @@
             [
                 "Ce n'est qu'un tout petit feu dans la nuit",
                 "mais c'est une grande promesse.",
-                "<a href='#'>Tu n'es pas seul.</a>"
+                [{ "a": "Tu n'es pas seul." }]
             ]
         ],
 
@@ -193,7 +193,7 @@
             [
                 "La diode verte",
                 "clignote encore",
-                "<a href='#'>pour toi</a>",
+                [{ "a": "pour toi" }],
                 "une dernière fois."
             ]
         ]
