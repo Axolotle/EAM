@@ -5,7 +5,7 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 load_dotenv(os.path.realpath(os.path.join(basedir, '../.env')))
 
 configs = {
-    'development': 'app.config.Config',
+    'development': 'api.config.Config',
     # 'testing': 'app.config.TestingConfig',
     # 'production': 'app.config.ProdConfig'
 }

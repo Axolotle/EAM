@@ -3,8 +3,8 @@ import threading
 
 from flask import Flask
 
-from app.config import configs
-from app.routes import home, upload
+from .config import configs
+from .routes import home, upload
 
 
 def create_app(config_name='development'):
