@@ -7,6 +7,10 @@ module.exports = {
       '^/api': {
         target: 'http://127.0.0.1:5000',
         logLevel: 'debug'
+      },
+      '^/static': {
+        target: 'http://127.0.0.1:5000',
+        logLevel: 'debug'
       }
     },
     watchOptions: {
