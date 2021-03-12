@@ -1,7 +1,9 @@
 <template>
   <div id="app">
-    <p>next: {{ nextEp }}</p>
-    <p>nextDate: {{ nextEpDate }}</p>
+    <div v-if="debug">
+      <p>next: {{ nextEp }}</p>
+      <p>nextDate: {{ nextEpDate }}</p>
+    </div>
 
     <component :is="component" v-if="component" />
   </div>
@@ -22,7 +24,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['nextEpDate', 'nextEp', 'component'])
+    ...mapGetters(['nextEpDate', 'nextEp', 'component', 'debug'])
   },
 
   created () {

@@ -1,6 +1,6 @@
 <template>
   <div class="episode">
-    Episode: {{ episode }}
+    <span v-if="debug">Episode: {{ episode }}</span>
     <text-display
       v-if="showIntro"
       :content="content" @next="playEp"
@@ -37,7 +37,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['episode'])
+    ...mapGetters(['episode', 'debug'])
   },
 
   created () {
