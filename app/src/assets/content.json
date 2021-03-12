@@ -206,6 +206,14 @@
         "pourront l'entendre."
     ],
 
+    "success": [
+      "Message envoyé"
+    ],
+
+    "error": [
+      "Erreur pendant l'envoi du message"
+    ],
+
     "streetIntro": [
         "Tu redescends,",
         "fermes la trappe,",

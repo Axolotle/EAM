@@ -34,7 +34,7 @@ export default {
       commit('SET_NEXT_EP', { nextEp, date })
     },
 
-    'PREFETCH_EPISODE' ({ commit }, ep) {
+    'PREFETCH_EPISODE' (store, ep) {
       return new Promise(resolve => {
         const audio = new Audio(`/static/assets/episodes/AEM-${ep}.ogg`)
         audio.muted = true

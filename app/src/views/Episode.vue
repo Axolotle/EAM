@@ -1,12 +1,23 @@
 <template>
   <div class="episode">
     <span v-if="debug">Episode: {{ episode }}</span>
+
+    <!-- Display intro -->
     <text-display
-      v-if="showIntro"
+      v-if="step === 'intro'"
       :content="content" @next="playEp"
     />
 
-    <audio-recorder v-if="showRecorder" @next="sendRecord" />
+    <!-- playEp -->
+    <button v-if="debug && step === 'audio'" @click="skipEpisode">
+      Passer l'épisode
+    </button>
+
+    <!-- Display audio recorder -->
+    <audio-recorder v-if="step === 'record'" @next="onRecordEnded" />
+
+    <!-- Display record and ask to send it -->
+    <audio-sender v-if="step === 'send'" :audio="record" @next="onEpisodeStepsEnded" />
   </div>
 </template>
 
@@ -16,6 +27,8 @@ import { mapGetters } from 'vuex'
 import data from '@/assets/content.json'
 import TextDisplay from '@/components/TextDisplay'
 import AudioRecorder from '@/components/AudioRecorder'
+import AudioSender from '@/components/AudioSender'
+import { sleep } from '@/utils'
 
 
 export default {
@@ -23,16 +36,16 @@ export default {
 
   components: {
     TextDisplay,
-    AudioRecorder
+    AudioRecorder,
+    AudioSender
   },
 
   data () {
     return {
-      showIntro: true,
-      showRecorder: false,
+      step: 'intro',
       content: undefined,
-      record: null,
-      recordUrl: null
+      audio: null,
+      record: null
     }
   },
 
@@ -47,19 +60,42 @@ export default {
 
   methods: {
     async playEp () {
-      this.showIntro = false
-      const audio = await this.audio
-      audio.muted = false
-      audio.play()
+      this.step = 'audio'
+      this.audio = await this.audio
+      this.audio.muted = false
+      this.audio.play()
       this.$store.dispatch('DEFINE_NEXT_EP')
-      this.showRecorder = true
+      const loopPromise = this.$store.dispatch('PREFETCH_LOOP')
+      this.audio.addEventListener(
+        'ended',
+        () => this.onEpisodeEnded(loopPromise),
+        { once: true }
+      )
     },
 
-    sendRecord (record) {
+    async onEpisodeEnded (loopPromise) {
+      const [loop] = await Promise.all([loopPromise, sleep(1500)])
+      this.loop = loop
+      this.step = 'record'
+      loop.play()
+    },
+
+    onRecordEnded (record) {
       if (record) {
         this.record = record
-        this.recordUrl = URL.createObjectURL(record)
+        this.step = 'send'
+      } else {
+        this.onEpisodeStepsEnded()
       }
+    },
+
+    onEpisodeStepsEnded () {
+      this.$store.dispatch('INIT')
+    },
+
+    // Debug
+    skipEpisode () {
+      this.audio.currentTime = this.audio.duration - 2
     }
   }
 }
