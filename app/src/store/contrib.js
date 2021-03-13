@@ -1,3 +1,7 @@
+import { prefetchAudioFile } from '@/utils'
+import AudioDispenser from '@/store/audioDispenser'
+
+
 export default {
   state: () => ({
   }),
@@ -7,10 +11,7 @@ export default {
 
   actions: {
     'PREFETCH_LOOP' (store) {
-      return new Promise(resolve => {
-        const audio = new Audio('/static/assets/misc/loop.ogg')
-        audio.addEventListener('canplaythrough', resolve(audio))
-      })
+      return prefetchAudioFile('/misc/loop.ogg', { loop: true })
     },
 
     'SEND_CONTRIB' (store, blob) {
@@ -19,6 +20,12 @@ export default {
       return fetch('/api/upload/', {
         method: 'POST',
         body: data
+      })
+    },
+
+    'GET_AUDIO_DISPENSER' () {
+      return fetch('api/contributions').then(resp => resp.json()).then(data => {
+        return new AudioDispenser(data.contribs)
       })
     }
   },

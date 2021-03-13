@@ -28,11 +28,11 @@ export default new Vuex.Store({
         commit('ACTIVATE_DEBUG')
       }
       const { nextEp, nextEpDate } = state.episode
-      if (nextEp <= 4 && nextEpDate <= new Date()) {
+      if (nextEp === null) {
+        commit('SET_COMPONENT', 'street')
+      } else if (nextEp <= 4 && nextEpDate <= new Date()) {
         commit('SET_EPISODE', nextEp)
         commit('SET_COMPONENT', 'episode')
-      } else if (nextEp === null) {
-        commit('SET_COMPONENT', 'street')
       } else {
         commit('SET_COMPONENT', undefined)
       }
