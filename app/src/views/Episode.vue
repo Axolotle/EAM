@@ -62,7 +62,6 @@ export default {
     async playEp () {
       this.step = 'audio'
       this.audio = await this.audio
-      this.audio.muted = false
       this.audio.play()
       this.$store.dispatch('DEFINE_NEXT_EP')
       const loopPromise = this.$store.dispatch('PREFETCH_LOOP')
