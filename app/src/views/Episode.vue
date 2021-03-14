@@ -63,7 +63,7 @@ export default {
       this.step = 'audio'
       this.audio = await this.audio
       this.audio.play()
-      this.$store.dispatch('DEFINE_NEXT_EP')
+      this.$store.dispatch('DEFINE_NEXT_EP', { temp: true })
       const loopPromise = this.$store.dispatch('PREFETCH_LOOP')
       this.audio.addEventListener(
         'ended',
@@ -88,7 +88,9 @@ export default {
       }
     },
 
-    onEpisodeStepsEnded () {
+    async onEpisodeStepsEnded () {
+      await this.$store.dispatch('RUN_EPISODE_END_ANIMATION')
+      this.$store.dispatch('DEFINE_NEXT_EP')
       this.$store.dispatch('INIT')
     },
 

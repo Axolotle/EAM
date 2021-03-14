@@ -1,12 +1,12 @@
 <template>
-  <div id="app">
+  <main id="app" ref="main">
     <div v-if="debug">
       <p>next: {{ nextEp }}</p>
       <p>nextDate: {{ nextEpDate }}</p>
     </div>
 
     <component :is="component" v-if="component" />
-  </div>
+  </main>
 </template>
 
 <script>
@@ -24,7 +24,13 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['nextEpDate', 'nextEp', 'component', 'debug'])
+    ...mapGetters(['nextEpDate', 'nextEp', 'animation', 'component', 'debug'])
+  },
+
+  watch: {
+    animation (val) {
+      this.$refs.main.animate(...val)
+    }
   },
 
   created () {
