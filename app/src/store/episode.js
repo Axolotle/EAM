@@ -8,10 +8,16 @@ export default {
     prevEpDate: new Date(localStorage.getItem('prev-ep-date') || Date.now() - 1),
     nextEpDate: new Date(localStorage.getItem('next-ep-date') || Date.now() - 1),
     delayMultiplier: 7 * 24,
-    recordDuration: 2000
+    recordDuration: 60000
   }),
 
   mutations: {
+    'SET_DEBUG_VALUES' (state, values) {
+      for (const [key, value] of Object.entries(values)) {
+        state[key] = value
+      }
+    },
+
     'SET_EPISODE' (state, int) {
       state.ep = int
     },

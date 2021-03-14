@@ -15,8 +15,8 @@ export default new Vuex.Store({
   }),
 
   mutations: {
-    'ACTIVATE_DEBUG' (state) {
-      state.debug = true
+    'SET_DEBUG' (state, boolean) {
+      state.debug = boolean
     },
 
     'SET_COMPONENT' (state, str) {
@@ -32,6 +32,14 @@ export default new Vuex.Store({
   },
 
   actions: {
+    'ACTIVATE_DEBUG' ({ state, commit }) {
+      commit('SET_DEBUG', true)
+      commit('SET_DEBUG_VALUES', {
+        delayMultiplier: 0.1,
+        recordDuration: 1
+      })
+    },
+
     'DEFINE_COMPONENT' ({ state, commit }) {
       const { nextEp, nextEpDate } = state.episode
       if (nextEp === null) {
@@ -57,7 +65,7 @@ export default new Vuex.Store({
 
     'INIT' ({ state, commit, dispatch }) {
       if (window.location.pathname.includes('debug')) {
-        commit('ACTIVATE_DEBUG')
+        dispatch('ACTIVATE_DEBUG')
       }
       dispatch('DEFINE_COMPONENT')
       dispatch('DEFINE_BACKGROUND')

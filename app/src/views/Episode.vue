@@ -96,7 +96,7 @@ export default {
 
     // Debug
     skipEpisode () {
-      this.audio.currentTime = this.audio.duration - 2
+      this.audio.currentTime = this.audio.duration - 1
     }
   }
 }
