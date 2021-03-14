@@ -67,7 +67,13 @@ export default {
       const loopPromise = this.$store.dispatch('PREFETCH_LOOP')
       this.audio.addEventListener(
         'ended',
-        () => this.onEpisodeEnded(loopPromise),
+        () => {
+          if (this.episode === 4) {
+            this.onEpisodeStepsEnded()
+          } else {
+            this.onEpisodeEnded(loopPromise)
+          }
+        },
         { once: true }
       )
     },
