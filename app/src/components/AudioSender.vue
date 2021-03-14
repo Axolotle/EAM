@@ -18,7 +18,7 @@
       <audio :src="audioUrl" controls />
     </div>
 
-    <div v-else>
+    <div class="text-black" v-else>
       <text-display v-if="uploadMessage" :content="[uploadMessage]" />
     </div>
   </div>
@@ -58,7 +58,7 @@ export default {
           this.uploadMessage = data.error
         }
 
-        setTimeout(() => this.$emit('next'), 3000)
+        this.$emit('next')
       })
     },
 

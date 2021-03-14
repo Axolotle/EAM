@@ -36,7 +36,7 @@ export default new Vuex.Store({
       commit('SET_DEBUG', true)
       commit('SET_DEBUG_VALUES', {
         delayMultiplier: 0.1,
-        recordDuration: 1
+        recordDuration: 1000
       })
     },
 

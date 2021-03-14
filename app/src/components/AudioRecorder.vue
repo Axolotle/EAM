@@ -4,6 +4,8 @@
       v-if="canRecord"
       type="button" name="record"
       aria-label="Démarrer l'enregistrement"
+      :style="`animation-duration: 50ms, ${recordDuration}ms;`"
+      :class="{ 'animate': recording }"
       @click="record"
     />
   </div>
@@ -19,6 +21,7 @@ export default {
   data () {
     return {
       canRecord: false,
+      recording: false,
       recorder: null
     }
   },
@@ -52,6 +55,7 @@ export default {
 
     record () {
       this.recorder.start()
+      this.recording = true
       setTimeout(() => {
         this.recorder.stream.getAudioTracks()[0].stop()
         this.recorder.stop()
@@ -61,7 +65,19 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+@keyframes scale {
+  to {
+    transform: scale(0)
+  }
+}
+
+@keyframes shape {
+  to {
+    border-radius: 0;
+  }
+}
+
 button {
   width: 60px;
   border: none;
@@ -71,5 +87,10 @@ button {
   color: white;
   font: inherit;
   cursor: pointer;
+
+  &.animate {
+    animation-name: shape, scale;
+    animation-fill-mode: both;
+  }
 }
 </style>

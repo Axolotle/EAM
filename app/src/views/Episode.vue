@@ -91,7 +91,7 @@ export default {
     async onEpisodeStepsEnded () {
       await this.$store.dispatch('RUN_EPISODE_END_ANIMATION')
       this.$store.dispatch('DEFINE_NEXT_EP')
-      this.$store.dispatch('INIT')
+      this.$store.dispatch('DEFINE_BACKGROUND')
     },
 
     // Debug
