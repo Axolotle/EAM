@@ -6,7 +6,7 @@
       aria-label="Démarrer l'enregistrement"
       :style="`animation-duration: 50ms, ${recordDuration}ms;`"
       :class="{ 'animate': recording }"
-      @click="record"
+      @click="onRecordClick"
     />
   </div>
 </template>
@@ -53,13 +53,23 @@ export default {
       }
     },
 
+    onRecordClick () {
+      if (this.recording) {
+        this.stopRecord()
+      } else {
+        this.record()
+      }
+    },
+
     record () {
       this.recorder.start()
       this.recording = true
-      setTimeout(() => {
-        this.recorder.stream.getAudioTracks()[0].stop()
-        this.recorder.stop()
-      }, this.recordDuration)
+      setTimeout(() => this.stopRecord(), this.recordDuration)
+    },
+
+    stopRecord () {
+      this.recorder.stream.getAudioTracks()[0].stop()
+      this.recorder.stop()
     }
   }
 }
