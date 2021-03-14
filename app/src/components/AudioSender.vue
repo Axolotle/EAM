@@ -7,7 +7,7 @@
         <button type="button" name="send" @click="send">
           Envoyer
         </button>
-        <button type="button" name="remove" @click="$emit('next')">
+        <button type="button" name="remove" @click="deleteRecord">
           Supprimer
         </button>
         <a :href="audioUrl" :download="tempFilename">
@@ -60,6 +60,11 @@ export default {
 
         this.$emit('next')
       })
+    },
+
+    deleteRecord () {
+      this.$emit('next')
+      this.uploadMessage = ''
     },
 
     download () {
