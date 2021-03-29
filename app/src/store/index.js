@@ -36,7 +36,7 @@ export default new Vuex.Store({
       commit('SET_DEBUG', true)
       commit('SET_DEBUG_VALUES', {
         delayMultiplier: 0.1,
-        recordDuration: 1000
+        recordDuration: 60000
       })
     },
 
@@ -58,7 +58,7 @@ export default new Vuex.Store({
       if (nextEp !== null && nextEpDate > now) {
         const max = nextEpDate - prevEpDate
         const curr = now - prevEpDate
-        const delta = 255 - (curr / max * 255)
+        const delta = 1 - curr / max
         dispatch('RUN_INITIAL_ANIMATION', [delta, nextEpDate - now])
       }
     },
@@ -72,13 +72,21 @@ export default new Vuex.Store({
     },
 
     'RUN_INITIAL_ANIMATION' ({ commit, dispatch }, [d, duration]) {
-      commit('SET_ANIMATION', { from: `rgb(${d}, ${d}, ${d})`, to: 'rgb(0, 0, 0)', duration })
+      commit('SET_ANIMATION', { from: `rgba(255, 255, 255, ${d})`, to: 'rgba(255, 255, 255, 0)', duration })
       setTimeout(() => dispatch('INIT'), duration + 1)
     },
 
     'RUN_EPISODE_END_ANIMATION' ({ commit }) {
-      commit('SET_ANIMATION', { from: '#000000', to: '#FFFFFF', duration: 2000 })
+      commit('SET_ANIMATION', { from: 'rgba(255, 255, 255, 0)', to: 'rgba(255, 255, 255, 1)', duration: 2000 })
       return sleep(2000)
+    },
+
+    'ON_EPISODE_ENDED' ({ commit, dispatch }) {
+      commit('SET_ANIMATION', { from: 'rgba(255, 255, 255, 0)', to: 'rgba(255, 255, 255, 1)', duration: 2000 })
+      setTimeout(() => {
+        dispatch('DEFINE_NEXT_EP')
+        dispatch('INIT')
+      }, 2000)
     }
   },
 
