@@ -1,5 +1,12 @@
 module.exports = {
   publicPath: '/',
+  css: {
+    loaderOptions: {
+      sass: {
+        prependData: '@import "@/assets/_variables.scss";'
+      }
+    }
+  },
   devServer: {
     clientLogLevel: 'warning',
     disableHostCheck: true,

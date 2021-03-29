@@ -92,7 +92,7 @@ button {
   width: 60px;
   border: none;
   height: 60px;
-  background-color: red;
+  background-color: $color-red;
   border-radius: 30px;
   color: white;
   font: inherit;

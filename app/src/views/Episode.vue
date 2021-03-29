@@ -1,15 +1,17 @@
 <template>
   <div class="episode">
-    <span v-if="debug">Episode: {{ episode }}</span>
+    <span v-if="debug" class="debug">Episode: {{ episode }}</span>
 
     <!-- Display intro -->
     <text-display
       v-if="step === 'intro'"
+      class="skew"
       :content="content" @next="playEp"
     />
 
+
     <!-- playEp -->
-    <button v-if="debug && step === 'audio'" @click="skipEpisode">
+    <button v-show="debug && step === 'audio'" @click="skipEpisode">
       Passer l'épisode
     </button>
 

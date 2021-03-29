@@ -1,3 +1,16 @@
+:root {
+  font-family: 'Fira Code';
+  line-height: 1.5;
+  font-size: 1rem;
+
+  @media (orientation: portrait) and (max-width: 500px) {
+    font-size: 2vw;
+  }
+  @media (orientation: landscape) and (max-height: 900px) {
+    font-size: 1.75vh;
+  }
+}
+
 * {
   box-sizing: border-box;
 }
@@ -8,33 +21,26 @@ html, body, main {
   overflow: hidden;
 }
 
-body {
-  background-color: black;
-  color: white;
-}
-
-.text-black {
-  color: black;
-}
-
-
-.flex-center {
+main {
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  color: white;
 }
 
 a, a:visited, a:active, a:focus {
   color: white;
 }
 
-.btn {
-  height: 30px;
-  line-height: 30px;
-  margin-right: 1rem;
+.text-black {
+  color: black;
+  a, a:visited, a:active, a:focus {
+    color: black;
+  }
 }
 
-.w-100 {
-  width: 100%;
+.debug {
+  color: blue;
+  font-size: .75rem;
 }

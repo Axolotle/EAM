@@ -1,5 +1,5 @@
 <template>
-  <div class="text">
+  <div class="text" v-bind="$attrs">
     <p v-for="(paragraph, i) in content" :key="i">
       <span v-for="(line, j) in paragraph" :key="j" class="alinea">
         <template v-if="Array.isArray(line)">
@@ -27,8 +27,19 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
+p {
+  margin-top: 0;
+  span {
+    background: #030303;
+    padding: 0 30px;
+  }
+}
+
 .alinea {
   display: block;
+}
+.skew {
+  transform: skewY(-5deg) scale(0.9, 1);
 }
 </style>
