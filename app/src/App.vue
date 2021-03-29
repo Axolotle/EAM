@@ -1,9 +1,11 @@
 <template>
   <main id="app" ref="main">
-    <div class="debug" v-if="debug">
+    <div v-if="debug" class="debug">
       <p>next: {{ nextEp }}</p>
       <p>nextDate: {{ nextEpDate }}</p>
     </div>
+
+    <city-background v-if="component !== 'street'" />
 
     <component :is="component" v-if="component" />
   </main>
@@ -13,6 +15,7 @@
 import { mapGetters } from 'vuex'
 import Episode from '@/views/Episode'
 import Street from '@/views/Street'
+import CityBackground from '@/views/CityBackground'
 
 
 export default {
@@ -20,6 +23,7 @@ export default {
 
   components: {
     Episode,
+    CityBackground,
     Street
   },
 
