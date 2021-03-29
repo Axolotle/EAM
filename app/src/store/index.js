@@ -9,7 +9,9 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: () => ({
+    splash: localStorage.getItem('headphone') === null,
     component: undefined,
+    headphone: localStorage.getItem('headphone') === 'true',
     debug: false,
     animation: null
   }),
@@ -17,6 +19,15 @@ export default new Vuex.Store({
   mutations: {
     'SET_DEBUG' (state, boolean) {
       state.debug = boolean
+    },
+
+    'SET_SPLASH' (state, boolean) {
+      state.splash = boolean
+    },
+
+    'SET_HEADPHONE' (state, boolean) {
+      state.headphone = boolean
+      localStorage.setItem('headphone', boolean)
     },
 
     'SET_COMPONENT' (state, str) {
@@ -81,6 +92,11 @@ export default new Vuex.Store({
       return sleep(2000)
     },
 
+    'ON_SPLASH_SCREEN_CLOSED' ({ commit, dispatch }, headphone) {
+      commit('SET_HEADPHONE', headphone)
+      commit('SET_SPLASH', false)
+    },
+
     'ON_EPISODE_ENDED' ({ commit, dispatch }) {
       commit('SET_ANIMATION', { from: 'rgba(255, 255, 255, 0)', to: 'rgba(255, 255, 255, 1)', duration: 2000 })
       setTimeout(() => {
@@ -93,7 +109,8 @@ export default new Vuex.Store({
   getters: {
     component: state => state.component,
     debug: state => state.debug,
-    animation: state => state.animation
+    animation: state => state.animation,
+    splash: state => state.splash
   },
 
   modules: {
