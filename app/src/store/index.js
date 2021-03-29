@@ -110,7 +110,8 @@ export default new Vuex.Store({
     component: state => state.component,
     debug: state => state.debug,
     animation: state => state.animation,
-    splash: state => state.splash
+    splash: state => state.splash,
+    headphone: state => state.headphone
   },
 
   modules: {

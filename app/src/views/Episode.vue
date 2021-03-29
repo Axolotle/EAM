@@ -52,7 +52,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['episode', 'debug'])
+    ...mapGetters(['episode', 'debug', 'headphone'])
   },
 
   created () {
@@ -84,7 +84,9 @@ export default {
       const [loop] = await Promise.all([loopPromise, sleep(1500)])
       this.loop = loop
       this.step = 'record'
-      loop.play()
+      if (this.headphone) {
+        loop.play()
+      }
     },
 
     onRecordEnded (record) {
@@ -98,6 +100,13 @@ export default {
 
     async onEpisodeStepsEnded () {
       this.$store.dispatch('ON_EPISODE_ENDED')
+      if (this.headphone) {
+        while (this.loop.volume > 0.05) {
+          this.loop.volume -= 0.05
+          await sleep(100)
+        }
+        this.loop.pause()
+      }
     },
 
     // Debug

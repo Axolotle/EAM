@@ -207,11 +207,11 @@
     ],
 
     "success": [
-      "Message envoyé"
+      "le message a bien été envoyé"
     ],
 
     "error": [
-      "Erreur pendant l'envoi du message"
+      "il y a eu un problème lors de l'envoi du message"
     ],
 
     "streetIntro": [
