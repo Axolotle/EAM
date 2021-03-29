@@ -1,5 +1,5 @@
 <template>
-  <svg ref="svg" :view-box.camel="viewBox">
+  <svg ref="svg" :view-box.camel="viewBox" class="fullscreen">
     <defs>
       <linearGradient
         id="top-grad"
@@ -151,11 +151,6 @@ export default {
 
 <style lang="scss" scoped>
 svg {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
   pointer-events: none;
   z-index: -1;
   background-color: #030303;

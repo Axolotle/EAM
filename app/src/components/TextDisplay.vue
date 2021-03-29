@@ -39,7 +39,4 @@ p {
 .alinea {
   display: block;
 }
-.skew {
-  transform: skewY(-5deg) scale(0.9, 1);
-}
 </style>

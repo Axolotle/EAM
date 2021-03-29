@@ -19,14 +19,22 @@ html, body, main {
   margin: 0;
   height: 100%;
   overflow: hidden;
+  color: white;
 }
 
-main {
+.fullscreen {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+}
+
+.container {
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  color: white;
 }
 
 a, a:visited, a:active, a:focus {
@@ -38,6 +46,21 @@ a, a:visited, a:active, a:focus {
   a, a:visited, a:active, a:focus {
     color: black;
   }
+}
+.skew {
+  transform: skewY(-5deg) scale(0.9, 1);
+}
+
+button {
+  background-color: $color-red;
+  color: black;
+  height: 2rem;
+  font: inherit;
+  border: none;
+  border-radius: 1rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  cursor: pointer;
 }
 
 .debug {

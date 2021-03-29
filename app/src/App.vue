@@ -1,6 +1,6 @@
 <template>
-  <main id="app" ref="main">
     <div v-if="debug" class="debug">
+  <main id="app" ref="main" class="container">
       <p>next: {{ nextEp }}</p>
       <p>nextDate: {{ nextEpDate }}</p>
     </div>
