@@ -4,7 +4,7 @@ import { prefetchAudioFile } from '@/utils'
 export default {
   state: () => ({
     ep: undefined,
-    nextEp: parseInt(localStorage.getItem('next-ep')) || 0,
+    nextEp: localStorage.getItem('next-ep') === 'null' ? null : parseInt(localStorage.getItem('next-ep')) || 0,
     prevEpDate: new Date(localStorage.getItem('prev-ep-date') || Date.now() - 1),
     nextEpDate: new Date(localStorage.getItem('next-ep-date') || Date.now() - 1),
     delayMultiplier: 7 * 24,
