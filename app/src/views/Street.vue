@@ -1,21 +1,19 @@
 <template>
   <div class="street">
-    La rue
+    <svg-drawing>
 
-    <svg
-      viewBox="0 -100 70 200"
-    >
       <street-sound
         v-for="(contrib, i) in contribs" :key="i"
         v-bind="contrib"
         @ended="switchAudio(contrib)"
       />
-    </svg>
+    </svg-drawing>
   </div>
 </template>
 
 <script>
 import { getRandInt } from '@/utils'
+import SvgDrawing from '@/components/SvgDrawing'
 import StreetSound from '@/components/StreetSound'
 
 export default {
@@ -23,6 +21,7 @@ export default {
 
   components: {
     StreetSound
+    SvgDrawing
   },
 
   data () {
@@ -32,7 +31,6 @@ export default {
       contribs: [],
       r: 30,
       size: 100,
-      viewbox: undefined
     }
   },
 
@@ -47,9 +45,12 @@ export default {
         this.contribs.push({ pos: this.getPos(), audio })
       }
     })
+  },
+
+  mounted () {
     window.addEventListener('wheel', e => {
-      this.animate(e.deltaY < 0 ? 1 : -1)
-    })
+      this.animate((e.deltaY < 0 ? 1 : -1) * 2)
+    }, { passive: true })
   },
 
   methods: {
@@ -93,12 +94,5 @@ export default {
 }
 </script>
 
-<style>
-svg {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100vh;
-  width: auto;
-}
+<style lang="scss" scoped>
 </style>
