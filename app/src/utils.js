@@ -24,3 +24,10 @@ export function prefetchAudioFile (uri, presets) {
     audio.addEventListener('canplaythrough', resolve(audio))
   })
 }
+
+export function vRotate (v, theta) {
+  theta = theta * (Math.PI / 180)
+  const cos = Math.cos(theta)
+  const sin = Math.sin(theta)
+  return [cos * v[0] - sin * v[1], sin * v[0] + cos * v[1]]
+}
