@@ -1,5 +1,8 @@
 <template>
   <div class="street">
+    <button v-if="cantPlay" @click="cantPlay = false">
+      commencer
+    </button>
     <svg-drawing>
       <!-- BUILDINGS -->
       <g :transform="buildingsTranslation">
@@ -56,6 +59,7 @@ export default {
     const vY = vRotate([100, 0], 30)
     const unit = 32
     return {
+      cantPlay: undefined,
       loop: undefined,
       dispenser: undefined,
       contribs: [],
@@ -162,6 +166,7 @@ export default {
 
     playLoop () {
       this.loop.play().catch(() => {
+        this.cantPlay = true
         setTimeout(() => this.playLoop(), 100)
       })
     },
