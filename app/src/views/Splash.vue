@@ -16,12 +16,30 @@
       </div>
 
       <p class="skew">
-        ça commence ici :
-        <button type="button" name="remove" @click="run(true)">
-          j'ai un casque
-        </button>
-        <button type="button" name="remove" @click="run(false)">
-          je n'ai pas de casque
+        <template v-if="finished && nextEp === null">
+          <button type="button" name="reset" @click="$store.dispatch('RESET_EPISODE')">
+            recommencer
+          </button>
+        </template>
+
+        <template v-else>
+          ça commence ici :
+
+          <button type="button" name="headphone" @click="run(['SET_HEADPHONE', true ])">
+            j'ai un casque
+          </button>
+
+          <button type="button" name="noheadphone" @click="run(['SET_HEADPHONE', false ])">
+            je n'ai pas de casque
+          </button>
+        </template>
+
+        <button
+          v-if="finished"
+          id="street-btn"
+          type="button" name="gotostreet" @click="$store.dispatch('RESTORE_FINISHED')"
+        >
+          retourner dans la rue
         </button>
       </p>
 
@@ -35,8 +53,11 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
+
 export default {
-  name: 'SPLASH',
+  name: 'Splash',
 
   data () {
     return {
@@ -44,12 +65,14 @@ export default {
     }
   },
 
+  computed: {
+    ...mapGetters(['finished', 'nextEp'])
+  },
+
   methods: {
-    run (headphone) {
+    run (data) {
       this.hide = true
-      setTimeout(() => {
-        this.$store.dispatch('ON_SPLASH_SCREEN_CLOSED', headphone)
-      }, 300)
+      this.$store.dispatch('ON_SPLASH_SCREEN_CLOSED', data)
     }
   }
 }
@@ -87,5 +110,9 @@ button {
 .hide {
   animation: opacity .3s linear;
   animation-fill-mode: both;
+}
+
+#street-btn {
+  margin-top: 2rem;
 }
 </style>

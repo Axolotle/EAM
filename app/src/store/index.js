@@ -92,12 +92,18 @@ export default new Vuex.Store({
       return sleep(2000)
     },
 
-    'ON_SPLASH_SCREEN_CLOSED' ({ commit, dispatch }, headphone) {
-      commit('SET_HEADPHONE', headphone)
-      commit('SET_SPLASH', false)
+    'SHOW_SPLASH' ({ commit }) {
+      commit('SET_SPLASH', true)
     },
 
-    'ON_EPISODE_ENDED' ({ commit, dispatch }) {
+    'ON_SPLASH_SCREEN_CLOSED' ({ state, commit, dispatch }, [key, value]) {
+      commit(key, value)
+      setTimeout(() => {
+        commit('SET_SPLASH', false)
+      }, 300)
+    },
+
+    'ON_EPISODE_ENDED' ({ state, commit, dispatch }) {
       commit('SET_ANIMATION', { from: 'rgba(255, 255, 255, 0)', to: 'rgba(255, 255, 255, 1)', duration: 2000 })
       setTimeout(() => {
         dispatch('DEFINE_NEXT_EP')

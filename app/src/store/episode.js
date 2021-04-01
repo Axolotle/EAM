@@ -8,6 +8,7 @@ export default {
     prevEpDate: new Date(localStorage.getItem('prev-ep-date') || Date.now() - 1),
     nextEpDate: new Date(localStorage.getItem('next-ep-date') || Date.now() - 1),
     delayMultiplier: 7 * 24,
+    finished: localStorage.getItem('finished') === 'true',
     recordDuration: 60000
   }),
 
@@ -32,6 +33,14 @@ export default {
       localStorage.setItem('next-ep', nextEp)
       localStorage.setItem('next-ep-date', nextEpDate.toISOString())
       localStorage.setItem('prev-ep-date', prevEpDate.toISOString())
+    },
+
+    'SET_FINISHED' (state, { finished, updateState = false }) {
+      console.log(finished, updateState)
+      localStorage.setItem('finished', finished)
+      if (updateState) {
+        state.finished = finished
+      }
     }
   },
 
@@ -46,6 +55,7 @@ export default {
         nextEpDate = new Date(now + delay * 3600000)
       } else {
         nextEp = null
+        commit('SET_FINISHED', { finished: true, updateState: !temp })
       }
       now = new Date(now)
       commit('SET_NEXT_EP_STORAGE', { nextEp, nextEpDate: nextEpDate || now, prevEpDate: now })
@@ -56,6 +66,20 @@ export default {
 
     'PREFETCH_EPISODE' (store, ep) {
       return prefetchAudioFile(`/episodes/AEM-${ep}.ogg`)
+    },
+
+    'RESET_EPISODE' ({ commit, dispatch }) {
+      localStorage.clear()
+      localStorage.setItem('finished', true)
+      window.location.reload()
+    },
+
+    'RESTORE_FINISHED' ({ state }) {
+      localStorage.clear()
+      localStorage.setItem('finished', true)
+      localStorage.setItem('next-ep', null)
+      localStorage.setItem('headphone', state.headphone)
+      window.location.reload()
     }
   },
 
@@ -63,6 +87,7 @@ export default {
     episode: state => state.ep,
     nextEp: state => state.nextEp,
     nextEpDate: state => state.nextEpDate,
-    recordDuration: state => state.recordDuration
+    recordDuration: state => state.recordDuration,
+    finished: state => state.finished
   }
 }
