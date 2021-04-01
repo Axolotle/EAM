@@ -42,7 +42,7 @@
 </template>
 
 <script>
-import { getRandInt, vRotate } from '@/utils'
+import { getRandInt, vRotate, getShape } from '@/utils'
 import SvgDrawing from '@/components/SvgDrawing'
 import StreetSound from '@/components/StreetSound'
 
@@ -102,27 +102,12 @@ export default {
   },
 
   methods: {
-    getShape (size) {
-      const [x, y, z] = size
-      let v = [-100, 0]
-      const points = [[0, 0]]
-      for (let i = 0; i <= 4; i++) {
-        v = vRotate(v, i === 0 ? 30 : 60)
-        const mult = i % 3 === 0 ? y : (i % 3 === 2 ? x : z)
-        points.push([v[0] * mult, v[1] * mult])
-      }
-      return {
-        path: 'M' + points.map(p => p.join(',')).join(' l'),
-        size
-      }
-    },
-
     generateBuildings () {
       const { start, unit, v, blocks } = this
       const distances = [start, start]
       blocks.forEach((buildings, i) => {
         while (distances[i] < unit) {
-          const shape = this.getShape([getRandInt(5, 12), 10, 6])
+          const shape = getShape([getRandInt(5, 12), 10, 6])
           shape.distance = distances[i]
           distances[i] += shape.size[0] + getRandInt(50, 200) / 100
           buildings.push(shape)
@@ -204,10 +189,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.building {
-  opacity: 0.85;
-  fill: black;
-}
 ::v-deep {
   line, circle {
     vector-effect: non-scaling-stroke;

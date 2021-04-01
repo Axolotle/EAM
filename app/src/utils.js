@@ -31,3 +31,18 @@ export function vRotate (v, theta) {
   const sin = Math.sin(theta)
   return [cos * v[0] - sin * v[1], sin * v[0] + cos * v[1]]
 }
+
+export function getShape (size, scale = 100) {
+  const [x, y, z] = size
+  let v = [-scale, 0]
+  const points = [[0, 0]]
+  for (let i = 0; i <= 4; i++) {
+    v = vRotate(v, i === 0 ? 30 : 60)
+    const mult = i % 3 === 0 ? y : (i % 3 === 2 ? x : z)
+    points.push([v[0] * mult, v[1] * mult])
+  }
+  return {
+    path: 'M' + points.map(p => p.join(',')).join(' l'),
+    size
+  }
+}

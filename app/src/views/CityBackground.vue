@@ -3,37 +3,32 @@
     <defs>
       <linearGradient
         id="top-grad"
-        x1="0.25" x2="0"
-        y1="0.25" y2="0"
+        x1="0" x2="0"
+        y1=".25" y2="0"
       >
         <stop offset="0%" stop-color="#000" />
-        <stop offset="100%" stop-color="#030303" />
+        <stop offset="100%" stop-color="#070707" />
       </linearGradient>
     </defs>
 
-    <g transform="translate(0.5, 0)">
-      <g
-        v-for="({ points, transform, cache }, i) in squares" :key="i"
-        :transform="transform"
-      >
-        <g>
-          <path :d="cache" :transform="`translate(${xMult / 2} ${yMult / 2})`" />
-          <path class="windows" :d="toDString(points)" />
-        </g>
-      </g>
+    <g v-for="(b, i) in buildings" :key="i" :transform="b.transform">
+      <path
+        :class="{ 'building': i < buildings.length - 1 }"
+        :d="b.path"
+        :fill="i === buildings.length - 1 ? 'url(#top-grad)' : 'black'"
+      />
+      <path
+        v-for="(w, j) in b.windows" :key="j + 'win'"
+        class="windows"
+        :d="toDString(w.points)"
+        :transform="w.transform"
+      />
     </g>
-
-    <rect
-      id="top"
-      fill="url(#top-grad)"
-      width="1200" height="1200"
-      transform="translate(200 100) skewY(30) skewX(-41)"
-    />
   </svg-drawing>
 </template>
 
 <script>
-import { getRandInt, sleep } from '@/utils'
+import { getRandInt, sleep, getShape, vRotate } from '@/utils'
 import SvgDrawing from '@/components/SvgDrawing'
 
 
@@ -45,33 +40,26 @@ export default {
   },
 
   data () {
-    const x = 35
-    const y = 20
     return {
-      squares: [],
-      xMult: 35,
-      yMult: 20,
-      lineH: 8,
+      lineH: 10,
+      buildings: [],
+      vX: vRotate([10, 0], -30),
+      vY: vRotate([10, 0], 30),
       sizes: [
-        /* eslint-disable */
-        // [xCount, yCount, skewYDir, translateX, translateY, topScale]
-        [25, 19, -1, -30 * x     ,  15 * y    , 'm -176.66918,-204 875,0 176.66919,204 v 408 l -875,0 -176.66921,-204 z'],
-        [15, 12,  1,  10 * x - 15,  -3 * y    , 'm 0,0 109.47204,-126.11813 525,0 -109.47214,126.11812 v 248 h -525 z'],
-        [3,  30,  1,  15 * x     , -21 * y    ],
-        [6,  30, -1,  18 * x     , -17 * y    , 'm -105,487.58548 v -608.82904 l 210,0.55493 105,121.243695 v 607.444935 l -210,0 z'],
-        [25, 20, -1, -40 * x     ,  -5 * y    , 'm -176.66922,204 0,-408 h 875 l 176.66922,204 v 408 l -875,0 z'],
-        [7,  19, -1,   0 * x     , -15 * y + 5],
-        [20, 19,  1, -20 * x     , -36 * y    , 'm 0,0 245,-282.25408 700,0 v 408 l -245,282.25408 h -700 z'],
-        [12,  19, -1, 10 * x,      -25 * y    ],
-        [20, 19,  1, -10 * x     , -46 * y -3 , 'm 0,0 419.9999,-483.86411 h 700.0001 v 405.537436 l -420,486.326674 h -700 z'],
-        /* eslint-enable */
+        { size: [50, 90, 40], pos: { x: 30, y: 10 } },
+        { size: [30, 90, 40], pos: { x: -10, y: 10 } },
+        { size: [90, 30, 40], pos: { x: -110, y: -50 } },
+        { size: [110, 25, 40], pos: { x: -135, y: 10 } },
+        { size: [30, 30, 120], pos: { x: 30, y: 100 } },
+        { size: [30, 70, 40], pos: { x: -30, y: 140 } },
+        // roof
+        { size: [140, 100, 40], pos: { x: -180, y: 170 }, axes: [] }
       ]
     }
   },
 
   created () {
-    this.sizes = this.sizes.reverse()
-    this.computeSquares()
+    this.generateBuildings()
     this.updatePoints()
   },
 
@@ -81,36 +69,43 @@ export default {
       return 'M' + points.map(p => p.join(',')).join(`v${h}M`) + 'v' + h
     },
 
-    computeSquares () {
-      const { yMult, xMult } = this
-      for (const [xCount, yCount, sy, tx, ty, cache] of this.sizes) {
-        const points = []
-        for (let y = yMult; y <= yCount * yMult; y += yMult) {
-          for (let x = xMult; x <= xCount * xMult; x += xMult) {
-            if (getRandInt(0, 3) > 2) {
-              points.push([x, y])
+    generateBuildings () {
+      const { vX, vY } = this
+      this.buildings = this.sizes.map(({ size, pos, axes = [0, 1] }) => {
+        const building = getShape(size, 10)
+        building.transform = `translate(${vX[0] * pos.x + vY[0] * pos.y} ${vX[1] * pos.x + vY[1] * pos.y})`
+        building.windows = axes.map(axe => {
+          const points = []
+          const [v1, v2] = axe === 0 ? vX : [-vY[0], -vY[1]]
+          const [zTimes, aTimes] = [Math.round((size[2] - 2) / 3), Math.round((size[axe] - 2) / 3)]
+          for (let z = 2; z < zTimes; z++) {
+            for (let a = 2; a < aTimes; a++) {
+              if (getRandInt(0, 3) > 2) {
+                points.push([v1 * a * 3, v2 * a * 3 + z * 3 * 10])
+              }
             }
           }
-        }
-        this.squares.push({
-          points,
-          transform: `translate(${tx} ${ty}) skewY(${sy * 30})`,
-          cache
+          return { points, transform: `translate(0 ${-size[2] * 10})` }
         })
-      }
+        return building
+      })
     },
 
     async updatePoints () {
-      const { yMult, xMult } = this
+      const { vX, vY, buildings } = this
       while (true) {
-        for (var i = 0; i < this.sizes.length; i++) {
-          const [xCount, yCount] = this.sizes[i]
-          const index = getRandInt(0, this.squares[i].points.length - 1)
-          this.$set(this.squares[i].points, index, [
-            getRandInt(0, xCount) * xMult,
-            getRandInt(0, yCount) * yMult
-          ])
-          await sleep(getRandInt(10, 150) * 10)
+        for (var i = 0; i < buildings.length; i++) {
+          const { size, windows } = buildings[i]
+          const z = getRandInt(0, Math.round((size[2] - 2) / 3))
+
+          for (var w = 0; w < windows.length; w++) {
+            const [v1, v2] = w === 0 ? vX : [-vY[0], -vY[1]]
+            const a = getRandInt(0, Math.round((size[w] - 2) / 3))
+            const points = windows[w].points
+            const index = getRandInt(0, points.length - 1)
+            this.$set(points, index, [v1 * a * 3, v2 * a * 3 + z * 3 * 10])
+            await sleep(getRandInt(10, 150) * 10)
+          }
         }
       }
     }
@@ -124,9 +119,5 @@ path.windows {
   stroke: white;
   stroke-width: 1px;
   stroke-linecap: butt;
-}
-
-.stroke-red {
-  stroke: $color-red;
 }
 </style>
