@@ -1,24 +1,24 @@
 <template>
   <div>
-    <div v-if="uploadMessage === null">
+    <div v-if="uploadMessage === null" class="skew">
       <text-display :content="[acknowledgment]" />
 
-      <div>
+      <div class="btns">
         <button type="button" name="send" @click="send">
           Envoyer
         </button>
         <button type="button" name="remove" @click="deleteRecord">
           Supprimer
         </button>
-        <a :href="audioUrl" :download="tempFilename">
+        <a :href="audioUrl" :download="tempFilename" class="btn">
           Télécharger
         </a>
       </div>
-
-      <audio :src="audioUrl" controls />
     </div>
 
-    <div class="text-black" v-else>
+    <audio v-if="uploadMessage === null" :src="audioUrl" controls />
+
+    <div v-else-if="uploadMessage !== null" class="skew">
       <text-display v-if="uploadMessage" :content="[uploadMessage]" />
     </div>
   </div>
@@ -74,11 +74,16 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 audio {
   position: absolute;
   bottom: 0;
   left: 0;
   width: 100%;
+}
+.btns {
+  *:not(:last-child) {
+    margin-right: 1rem;
+  }
 }
 </style>

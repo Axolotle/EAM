@@ -10,6 +10,14 @@
     <component :is="component" v-if="component" />
 
     <splash v-if="splash" />
+
+    <button
+      v-if="finished"
+      id="credits"
+      @click="$store.dispatch('SHOW_SPLASH')"
+    >
+      crédits
+    </button>
   </main>
 </template>
 
@@ -32,7 +40,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['nextEpDate', 'nextEp', 'animation', 'component', 'debug', 'splash'])
+    ...mapGetters(['nextEpDate', 'nextEp', 'animation', 'component', 'debug', 'splash', 'finished'])
   },
 
   watch: {

@@ -31,8 +31,11 @@ export default {
 p {
   margin-top: 0;
   span {
-    background: #030303;
-    padding: 0 30px;
+    background: $color-grey;
+    padding: 0 2rem;
+    @media (max-width: 500px) {
+      padding: 0 1rem;
+    }
   }
 }
 

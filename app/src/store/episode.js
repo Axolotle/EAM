@@ -36,7 +36,6 @@ export default {
     },
 
     'SET_FINISHED' (state, { finished, updateState = false }) {
-      console.log(finished, updateState)
       localStorage.setItem('finished', finished)
       if (updateState) {
         state.finished = finished

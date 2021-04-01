@@ -5,7 +5,7 @@
     <!-- Display intro -->
     <text-display
       v-if="step === 'intro'"
-      class="skew"
+      class="skew episode"
       :content="content" @next="playEp"
     />
 
