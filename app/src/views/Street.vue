@@ -2,51 +2,38 @@
   <div class="street">
     <svg-drawing>
       <!-- BUILDINGS -->
-      <g :transform="`translate(${t * vX[0]} ${t * vX[1]})`">
-        <path
-          v-for="(topBlock, i) in blocks[0]" :key="i"
-          :transform="topBlock.transform"
-          :d="topBlock.path"
-          :fill="topBlock.color || 'black'"
-          :opacity="topBlock.color ? '0.5' : '1'"
-        />
-
-        <g :transform="`translate(${vY[0] * 18} ${vY[1] * 18})`">
+      <g :transform="buildingsTranslation">
+        <g :transform="`translate(${v.y[0] * -1} ${v.y[1] * -1})`">
           <path
-            v-for="(botBlock, i) in blocks[1]" :key="i + 'bot'"
-            :transform="botBlock.transform"
-            :d="botBlock.path"
-            :fill="botBlock.color || 'black'"
-            :opacity="botBlock.color ? '0.5' : '1'"
+            v-for="(topBlock, i) in blocks[0]" :key="i + 'top'"
+            class="building"
+            :transform="topBlock.transform"
+            :d="topBlock.path"
           />
         </g>
       </g>
 
-      <!-- <street-sound
-        v-for="(contrib, i) in contribs" :key="i"
-        v-bind="contrib"
-        @ended="switchAudio(contrib)"
-      /> -->
-
-      <line
-        x1="0" y1="0"
-        :x2="vX[0]" :y2="vX[1]"
-        stroke="red"
-      />
-      <line
-        x1="0" y1="0"
-        :x2="vY[0]" :y2="vY[1]"
-        stroke="green"
-      />
-      <line
-        :x1="vY[0]" :y1="vY[1]"
-        :x2="vY[0] * 2" :y2="vY[1] * 2"
-        stroke="yellow"
-      />
       <circle
-        :cx="vZ[0]" :cy="vZ[1]"
+        :cx="0" :cy="0"
         r="10" fill="red"
       />
+
+      <street-sound
+        v-for="contrib in contribs" :key="contrib.index"
+        v-bind="contrib"
+        @ended="switchAudio(contrib)"
+      />
+
+      <g :transform="buildingsTranslation">
+        <g :transform="`translate(${v.y[0] * 17} ${v.y[1] * 17})`">
+          <path
+            v-for="(botBlock, i) in blocks[1]" :key="i + 'bot'"
+            class="building"
+            :transform="botBlock.transform"
+            :d="botBlock.path"
+          />
+        </g>
+      </g>
     </svg-drawing>
   </div>
 </template>
@@ -60,28 +47,32 @@ export default {
   name: 'Street',
 
   components: {
-    SvgDrawing
-    // StreetSound
+    SvgDrawing,
+    StreetSound
   },
 
   data () {
-    const vX = vRotate([-100, 0], -30)
+    const vX = vRotate([100, 0], -30)
     const vY = vRotate([100, 0], 30)
-    const w = 32
+    const unit = 32
     return {
       loop: undefined,
       dispenser: undefined,
       contribs: [],
-      r: 30,
-      size: 100,
       // buildings
       blocks: [[], []],
-      distance: [-w, -w],
-      vX,
-      vY,
-      vZ: [vX[0] + vY[0], vX[1] + vY[1]],
+      v: { x: vX, y: vY, z: [-vX[0] + vY[0], -vX[1] + vY[1]] },
       t: 0,
-      w
+      unit,
+      start: -unit,
+      end: unit
+    }
+  },
+
+  computed: {
+    buildingsTranslation () {
+      const { t, v: { x } } = this
+      return `translate(${t * x[0]} ${t * x[1]})`
     }
   },
 
@@ -92,22 +83,21 @@ export default {
       this.loop = audio
       this.playLoop()
     })
+
     this.$store.dispatch('GET_AUDIO_DISPENSER').then(async audioDispenser => {
       this.dispenser = audioDispenser
-      for await (const audio of audioDispenser.next(3)) {
-        this.contribs.push({ pos: this.getPos(), audio })
-      }
+      this.generateContribs()
     })
   },
 
   mounted () {
     window.addEventListener('wheel', e => {
-      this.animate((e.deltaY < 0 ? 1 : -1) * 2)
+      this.animate((e.deltaY < 0 ? -1 : 1))
     }, { passive: true })
   },
 
   methods: {
-    getShape (size, side = 0) {
+    getShape (size) {
       const [x, y, z] = size
       let v = [-100, 0]
       const points = [[0, 0]]
@@ -116,31 +106,32 @@ export default {
         const mult = i % 3 === 0 ? y : (i % 3 === 2 ? x : z)
         points.push([v[0] * mult, v[1] * mult])
       }
-      const shape = {
+      return {
         path: 'M' + points.map(p => p.join(',')).join(' l'),
-        distance: this.distance[side],
         size
       }
-      this.distance[side] += x + getRandInt(50, 200) / 100
-      return shape
     },
 
     generateBuildings () {
-      const { w, vX, blocks } = this
+      const { start, unit, v, blocks } = this
+      const distances = [start, start]
       blocks.forEach((buildings, i) => {
-        while (this.distance[i] < w) {
-          buildings.push(this.getShape([getRandInt(5, 12), 10, 6], i))
+        while (distances[i] < unit) {
+          const shape = this.getShape([getRandInt(5, 12), 10, 6])
+          shape.distance = distances[i]
+          distances[i] += shape.size[0] + getRandInt(50, 200) / 100
+          buildings.push(shape)
         }
       })
-      const distTotal = this.distance[1] = this.distance[0]
+      this.end = distances[0]
       const extra = { head: [[], []], tail: [[], []] }
 
       blocks.forEach((buildings, side) => {
         const len = buildings.length - 1
         for (var i = 0; i < 3; i++) {
           for (const [type, index, dir] of [['head', i, 1], ['tail', len - i, -1]]) {
-            const distance = buildings[index].distance + (distTotal + w) * dir
-            extra[type][side].push({ ...buildings[index], distance, color: dir ? 'red' : 'blue' })
+            const distance = buildings[index].distance + (this.end + unit) * dir
+            extra[type][side].push({ ...buildings[index], distance })
           }
         }
       })
@@ -149,10 +140,23 @@ export default {
         buildings.unshift(...extra.tail[i])
         buildings.push(...extra.head[i])
         buildings.forEach(building => {
-          building.transform = `translate(${building.distance * -vX[0]} ${building.distance * -vX[1]})`
+          building.transform = `translate(${building.distance * v.x[0]} ${building.distance * v.x[1]})`
         })
       })
       this.blocks = blocks.map(buildings => buildings.reverse())
+    },
+
+    async generateContribs () {
+      const { start, end, v } = this
+      const contribs = []
+      let x = start
+      let index = 0
+      while (x < end) {
+        const audio = await this.dispenser.next()
+        contribs.push({ x, v, audio, index: index++ })
+        x += getRandInt(20, 150) / 10
+      }
+      this.contribs = contribs
     },
 
     playLoop () {
@@ -165,42 +169,42 @@ export default {
       contrib.audio = await this.dispenser.next()
     },
 
-    getPos () {
-      const { size, r } = this
-      const pos = getRandInt(-size, size)
-      if (pos >= -r && pos <= r) {
-        return this.getPos()
-      } else if (this.pointIsTooClose(pos)) {
-        return this.getPos()
-      }
-      return pos
-    },
-
-    pointIsTooClose (p) {
-      return !this.contribs.every(({ pos }) => {
-        return Math.abs(pos - p) > this.r * 1.5
-      })
-    },
-
     animate (dir) {
-      this.contribs.forEach(contrib => {
-        let pos = contrib.pos + dir
-        if (pos < -this.size || pos > this.size) {
-          pos = this.getPos()
-        }
-        contrib.pos = pos
-      })
-      this.t += 0.2 * dir
+      const { start, end } = this
 
-      if (this.t > this.distance[0]) {
-        this.t = -this.w
-      } else if (this.t < -this.w) {
-        this.t = this.distance[0]
+      // Update sound position
+      this.contribs.forEach(contrib => (contrib.x += 0.2 * dir))
+      const last = this.contribs[dir === -1 ? 0 : this.contribs.length - 1]
+      const len = this.contribs.length - 1
+      if (dir === -1 && last.x < start) {
+        last.x = getRandInt((this.contribs[len].x + 2) * 10, (end + 5) * 10) / 10
+        this.contribs.push(this.contribs.shift())
+      } else if (dir === 1 && last.x > end) {
+        last.x = getRandInt((start - 5) * 10, (this.contribs[0].x - 2) * 10) / 10
+        this.contribs.unshift(this.contribs.pop())
       }
+
+      // Update buildings position
+      let t = this.t + 0.2 * dir
+      if (-t > end) {
+        t = -start
+      } else if (-t < start) {
+        t = -end
+      }
+      this.t = t
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
+.building {
+  opacity: 0.85;
+  fill: black;
+}
+::v-deep {
+  line, circle {
+    vector-effect: non-scaling-stroke;
+  }
+}
 </style>

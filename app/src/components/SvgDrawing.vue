@@ -61,7 +61,6 @@ export default {
 <style lang="scss" scoped>
 svg {
   z-index: -1;
-  background-color: grey;
-  // background-color: $color-grey;
+  background-color: $color-grey;
 }
 </style>

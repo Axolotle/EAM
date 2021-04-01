@@ -1,26 +1,48 @@
 <template>
-  <circle
-    :cy="pos"
-    r="10" cx="35" fill="blue"
-  />
+  <g>
+    <line
+      :x1="pos.x" :y1="(pos.y - 10)"
+      :x2="pos.x" :y2="(pos.y + 10)"
+    />
+
+    <circle
+      :cx="pos.x"
+      :cy="pos.y"
+      :r="r * 100"
+    />
+  </g>
 </template>
 
 <script>
-import { easeInOutQuad } from '@/utils'
+import { easeInOutQuad, getRandInt } from '@/utils'
 
 
 export default {
   name: 'StreetSound',
 
   props: {
-    pos: { type: Number, required: true },
-    audio: { type: Audio, required: true }
+    x: { type: Number, required: true },
+    y: { type: Number, default: () => getRandInt(-90, 90) / 100 },
+    v: { type: Object, required: true },
+    audio: { type: Audio, required: true },
+    r: { type: Number, default: 2 }
+  },
+
+  computed: {
+    pos () {
+      const { x, y, v } = this
+      return { x: x * v.x[0] + y * v.y[0], y: x * v.x[1] + y * v.y[1] }
+    }
   },
 
   watch: {
-    pos () {
+    x () {
       this.updateVolume()
     }
+  },
+
+  mounted () {
+    this.updateVolume()
   },
 
   methods: {
@@ -30,13 +52,15 @@ export default {
     },
 
     updateVolume () {
+      const { x, r, pos } = this
       let volume = 0
-      const distanceFromCenter = Math.abs(this.pos)
-      if (distanceFromCenter <= 30) {
+      let distanceFromCenter = Math.abs(x)
+      if (distanceFromCenter <= r) {
+        distanceFromCenter = Math.abs(Math.hypot(pos.x, pos.y) / 100)
         if (this.audio.paused) {
           this.start()
         }
-        volume = easeInOutQuad(1 - distanceFromCenter / 30)
+        volume = easeInOutQuad(1 - distanceFromCenter / r)
       }
       this.audio.volume = volume
     }
@@ -44,5 +68,12 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
+line {
+  stroke: white
+}
+circle {
+  fill: none;
+  stroke: $color-red;
+}
 </style>
