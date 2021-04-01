@@ -82,6 +82,7 @@ export default {
 
     async onEpisodeEnded (loopPromise) {
       const [loop] = await Promise.all([loopPromise, sleep(1500)])
+      loop.volume = 0.8
       this.loop = loop
       this.step = 'record'
       if (this.headphone) {
@@ -100,7 +101,7 @@ export default {
 
     async onEpisodeStepsEnded () {
       this.$store.dispatch('ON_EPISODE_ENDED')
-      if (this.headphone) {
+      if (this.headphone && this.loop) {
         while (this.loop.volume > 0.05) {
           this.loop.volume -= 0.05
           await sleep(100)

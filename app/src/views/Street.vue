@@ -80,6 +80,7 @@ export default {
     this.generateBuildings()
 
     this.$store.dispatch('PREFETCH_LOOP').then(audio => {
+      audio.volume = 0.8
       this.loop = audio
       this.playLoop()
     })
