@@ -5,6 +5,7 @@ from flask import Flask
 
 from .config import configs
 from .routes import home, upload
+from .commands import admin_cli
 
 
 def create_app(config_name='development'):
@@ -15,8 +16,13 @@ def create_app(config_name='development'):
 
     with app.app_context():
         register_blueprints(app)
+        register_commands(app)
 
         return app
+
+
+def register_commands(app):
+    app.cli.add_command(admin_cli)
 
 
 def register_blueprints(app):
