@@ -1,4 +1,5 @@
-from flask import Blueprint, render_template
+import os
+from flask import Blueprint, render_template, current_app
 
 bp = Blueprint('home', __name__)
 
@@ -15,4 +16,6 @@ def index_debug():
 
 @bp.route('/contributions', methods=['GET'])
 def contribs():
-    return { 'contribs': [str(n) + '.ogg' for n in range(1, 9)] }
+    assets_path = os.path.join(current_app.root_path, 'static', 'assets')
+    with open(os.path.join(assets_path, 'contributions.cvs'), 'r') as input:
+        return {'contribs': input.read().rstrip().split('\n')}
