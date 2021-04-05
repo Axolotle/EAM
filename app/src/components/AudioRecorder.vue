@@ -22,7 +22,8 @@ export default {
     return {
       canRecord: false,
       recording: false,
-      recorder: null
+      recorder: null,
+      recordTimeoutId: null
     }
   },
 
@@ -50,6 +51,7 @@ export default {
       this.canRecord = true
       this.recorder.ondataavailable = ({ data }) => {
         this.$emit('next', data)
+        clearTimeout(this.recordTimeoutId)
       }
     },
 
@@ -64,7 +66,7 @@ export default {
     record () {
       this.recorder.start()
       this.recording = true
-      setTimeout(() => this.stopRecord(), this.recordDuration)
+      this.recordTimeoutId = setTimeout(() => this.stopRecord(), this.recordDuration)
     },
 
     stopRecord () {
