@@ -14,7 +14,7 @@ export default class audioDispenser {
 
   async * generator (i = -1) {
     while (this.nextIndex > i) {
-      yield await prefetchAudioFile('/originals/' + this.filenames[this.nextIndex--], { volume: 0 })
+      yield await prefetchAudioFile('/contributions/' + this.filenames[this.nextIndex--], { volume: 0 })
       if (this.nextIndex === -1) {
         this.nextIndex = this.filenames.length - 1
       }
