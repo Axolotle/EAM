@@ -3,10 +3,14 @@ import AudioDispenser from '@/store/audioDispenser'
 
 
 export default {
-  state: () => ({
-  }),
+  state: {
+    contribs: null
+  },
 
   mutations: {
+    'SET_CONTRIBS' (state, contribs) {
+      state.contribs = contribs
+    }
   },
 
   actions: {
@@ -23,13 +27,21 @@ export default {
       })
     },
 
-    'GET_AUDIO_DISPENSER' () {
-      return fetch('api/contributions').then(resp => resp.json()).then(data => {
-        return new AudioDispenser(data.contribs)
+    'GET_CONTRIBS' ({ state, commit }) {
+      return fetch('api/contributions').then(resp => resp.json()).then(contribs => {
+        commit('SET_CONTRIBS', contribs.contribs)
+        return state.contribs
+      })
+    },
+
+    'GET_AUDIO_DISPENSER' ({ dispatch }) {
+      return dispatch('GET_CONTRIBS').then(contribs => {
+        return new AudioDispenser(contribs)
       })
     }
   },
 
   getters: {
+    contribs: state => state.contribs
   }
 }

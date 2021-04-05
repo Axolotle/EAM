@@ -78,8 +78,12 @@ export default new Vuex.Store({
       if (window.location.pathname.includes('debug')) {
         dispatch('ACTIVATE_DEBUG')
       }
-      dispatch('DEFINE_COMPONENT')
-      dispatch('DEFINE_BACKGROUND')
+      if (window.location.pathname.includes(process.env.VUE_APP_ADMIN)) {
+        commit('SET_COMPONENT', 'admin')
+      } else {
+        dispatch('DEFINE_COMPONENT')
+        dispatch('DEFINE_BACKGROUND')
+      }
     },
 
     'RUN_INITIAL_ANIMATION' ({ commit, dispatch }, [d, duration]) {

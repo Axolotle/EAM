@@ -5,7 +5,7 @@
       <p>nextDate: {{ nextEpDate }}</p>
     </div>
 
-    <city-background v-if="component !== 'street'" />
+    <city-background v-if="!['street', 'admin'].includes(component)" />
 
     <component :is="component" v-if="component" />
 
@@ -27,7 +27,7 @@ import Splash from '@/views/Splash'
 import Episode from '@/views/Episode'
 import Street from '@/views/Street'
 import CityBackground from '@/views/CityBackground'
-
+import Admin from '@/views/Admin'
 
 export default {
   name: 'App',
@@ -36,7 +36,8 @@ export default {
     Splash,
     Episode,
     CityBackground,
-    Street
+    Street,
+    Admin
   },
 
   computed: {

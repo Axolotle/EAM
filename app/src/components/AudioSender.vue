@@ -1,7 +1,7 @@
 <template>
-  <div>
-    <div v-if="uploadMessage === null" class="skew">
-      <text-display :content="[acknowledgment]" />
+  <div class="audio-sender">
+    <div v-if="uploadMessage === null" :class="{ 'skew': styling }">
+      <text-display v-if="styling" :content="[acknowledgment]" />
 
       <div class="btns">
         <button type="button" name="send" @click="send">
@@ -37,7 +37,8 @@ export default {
   },
 
   props: {
-    audio: { type: Blob, required: true }
+    audio: { type: Blob, required: true },
+    styling: { type: Boolean, default: true }
   },
 
   data () {
@@ -51,7 +52,7 @@ export default {
 
   methods: {
     send () {
-      this.$store.dispatch('SEND_CONTRIB', this.audio).then(async response => {
+      this.$store.dispatch('SEND_CONTRIB', { blob: this.audio }).then(async response => {
         if (response.ok) {
           this.uploadMessage = data.success
         } else {
