@@ -27,21 +27,21 @@
             [
                 "Le récepteur est toujours en place,",
                 "avec ses câbles et ses bâches,",
-                "avec ses antennes plantées dans tout sens,",
+                "avec ses antennes plantées dans tous les sens,",
                 "ses antennes hérissées vers le ciel."
             ],
             [
                 "En approchant,",
-                "tu vois la diode verte qui clignote",
+                "tu vois la diode qui clignote",
                 "et tu crois d'abord à une erreur,",
                 "te dis que la tempête a déréglé la machine,",
-                "qu'il va te falloir la réparer, la régler, la relancer."
+                "qu'il va te falloir la réparer, la calibrer, la relancer."
             ],
             [
                 "Tu dois bientôt te rendre l'évidence."
             ],
             [
-                "Ca s'est produit.",
+                "Ça s'est produit.",
                 "Enfin."
             ],
             [
@@ -53,7 +53,7 @@
         "1": [
             [
                 "Tu montes les douze étages à pieds,",
-                "puis te hisse le long de l'échelle d'accès,",
+                "puis te hisses le long de l'échelle d'accès,",
                 "verticale, aux barreaux d'aluminium."
             ],
             [
@@ -66,7 +66,7 @@
             [
                 "Tu essaies de ne pas te précipiter.",
                 "Ne pas vérifier tout de suite",
-                "si la diode verte clignote,",
+                "si la diode clignote,",
                 "si la machine à capté quelque chose."
             ],
             [
@@ -81,7 +81,7 @@
                 "Tu as attendu si longtemps."
             ],
             [
-                "La led pulse en vert."
+                "La led pulse."
             ],
             [
                 [{ "a": "Quelqu'un va te parler." }]
@@ -100,7 +100,7 @@
                 "lourd de pluie et de lumière."
             ],
             [
-                "Il ne garde aucune trace des messages qui le traversent.",
+                "Le ciel ne garde aucune trace des messages qui le traversent.",
                 "Aucune piste.",
                 "Mais il bouge lentement,",
                 "enfle, avance, tourne."
@@ -191,7 +191,7 @@
                 "de leds de couleur."
             ],
             [
-                "La diode verte",
+                "La diode",
                 "clignote encore",
                 [{ "a": "pour toi" }],
                 "une dernière fois."
