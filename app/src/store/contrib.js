@@ -18,9 +18,12 @@ export default {
       return prefetchAudioFile('/misc/loop.ogg', { loop: true })
     },
 
-    'SEND_CONTRIB' (store, blob) {
+    'SEND_CONTRIB' (store, { blob, duration }) {
       const data = new FormData()
+      data.append('ps', process.env.VUE_APP_PS)
       data.append('file', blob)
+      data.append('duration', duration)
+      data.append('size', blob.size)
       return fetch('/api/upload/', {
         method: 'POST',
         body: data

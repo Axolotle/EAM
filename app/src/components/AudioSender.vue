@@ -1,6 +1,6 @@
 <template>
   <div class="audio-sender">
-    <div v-if="uploadMessage === null" :class="{ 'skew': styling }">
+    <div v-if="!uploadIsOk" :class="{ 'skew': styling }">
       <text-display v-if="styling" :content="[acknowledgment]" />
 
       <div class="btns">
@@ -16,16 +16,19 @@
       </div>
     </div>
 
-    <audio v-if="uploadMessage === null" :src="audioUrl" controls />
+    <audio
+      v-if="!uploadIsOk" ref="audio"
+      :src="audioUrl" controls
+    />
 
-    <div v-else-if="uploadMessage !== null" class="skew">
+    <div v-if="uploadMessage !== null" class="skew">
       <text-display v-if="uploadMessage" :content="[uploadMessage]" />
     </div>
   </div>
 </template>
 
 <script>
-import data from '@/assets/content.json'
+import content from '@/assets/content.json'
 import TextDisplay from '@/components/TextDisplay'
 
 
@@ -43,21 +46,27 @@ export default {
 
   data () {
     return {
-      acknowledgment: data.acknowledgment,
+      acknowledgment: content.acknowledgment,
       audioUrl: URL.createObjectURL(this.audio),
       tempFilename: new Date().toISOString().split('.')[0].replaceAll(':', '_') + '.ogg',
-      uploadMessage: null
+      uploadMessage: null,
+      uploadIsOk: false
     }
   },
 
   methods: {
     send () {
-      this.$store.dispatch('SEND_CONTRIB', { blob: this.audio }).then(async response => {
+      const data = {
+        blob: this.audio,
+        duration: this.$refs.audio.duration
+      }
+      this.$store.dispatch('SEND_CONTRIB', data).then(async response => {
         if (response.ok) {
-          this.uploadMessage = data.success
+          this.uploadMessage = content.success
         } else {
-          this.uploadMessage = data.error
+          this.uploadMessage = content.error
         }
+        this.uploadIsOk = this.styling ? true : response.ok
 
         this.$emit('next')
       })
