@@ -68,6 +68,9 @@ p {
   @media (max-width: 400px) and (min-height: 670) {
     font-size: 3.5vw;
   }
+  max-height: 100vh;
+  overflow: auto;
+  padding: 3rem 0;
 }
 
 .building {
