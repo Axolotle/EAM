@@ -108,6 +108,7 @@ export default {
     onRecordClick () {
       if (this.recording) {
         this.stopRecord()
+        clearTimeout(this.recordTimeoutId)
       } else {
         this.startRecord()
       }
