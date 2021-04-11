@@ -16,10 +16,7 @@
     </button>
 
     <!-- Display audio recorder -->
-    <audio-recorder v-if="step === 'record'" @next="onRecordEnded" />
-
-    <!-- Display record and ask to send it -->
-    <audio-sender v-if="step === 'send'" :audio="record" @next="onEpisodeStepsEnded" />
+    <audio-recorder v-if="step === 'record'" @next="onEpisodeStepsEnded" />
   </div>
 </template>
 
@@ -29,7 +26,6 @@ import { mapGetters } from 'vuex'
 import data from '@/assets/content.json'
 import TextDisplay from '@/components/TextDisplay'
 import AudioRecorder from '@/components/AudioRecorder'
-import AudioSender from '@/components/AudioSender'
 import { sleep } from '@/utils'
 
 
@@ -38,8 +34,7 @@ export default {
 
   components: {
     TextDisplay,
-    AudioRecorder,
-    AudioSender
+    AudioRecorder
   },
 
   data () {
@@ -87,15 +82,6 @@ export default {
       this.step = 'record'
       if (this.headphone) {
         loop.play()
-      }
-    },
-
-    onRecordEnded (record) {
-      if (record) {
-        this.record = record
-        this.step = 'send'
-      } else {
-        this.onEpisodeStepsEnded()
       }
     },
 

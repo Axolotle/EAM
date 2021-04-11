@@ -9,12 +9,14 @@
       >
         Enregistrer
       </button>
-      <audio-recorder v-if="recording && record === null" @next="onRecordEnded" />
-      <audio-sender v-if="record" :audio="record" :styling="false" />
+      <audio-recorder
+        v-if="recording" :key="key" :styling="false"
+        @next="onRecordEnded"
+      />
       <button
-        v-if="record"
+        v-if="recording"
         type="button" name="reset"
-        @click="record = null"
+        @click="key = Math.random()"
       >
         Reset
       </button>
@@ -36,22 +38,20 @@
 
 <script>
 import AudioRecorder from '@/components/AudioRecorder'
-import AudioSender from '@/components/AudioSender'
-
 
 export default {
   name: 'Admin',
 
   components: {
-    AudioRecorder,
-    AudioSender
+    AudioRecorder
   },
 
   data () {
     return {
       record: null,
       recording: false,
-      contribs: []
+      contribs: [],
+      key: Math.random()
     }
   },
 
@@ -92,7 +92,7 @@ export default {
     .audio-sender audio {
       margin: 1rem 0;
       position: static;
-      width: auto;
+      width: 100%;
     }
 
     .skew {

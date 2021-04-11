@@ -1,35 +1,89 @@
 <template>
   <div>
     <button
-      v-if="canRecord"
+      v-if="step === 'record'"
       type="button" name="record"
       aria-label="Démarrer l'enregistrement"
       :style="`animation-duration: 50ms, ${recordDuration}ms;`"
-      :class="{ 'animate': recording }"
+      :class="{ 'animate': recording }" class="record-btn"
       @click="onRecordClick"
     />
+
+    <div v-if="step === 'send'" class="audio-sender">
+      <div v-if="!sent" :class="{ 'skew': styling }">
+        <text-display v-if="styling" :content="[acknowledgment]" />
+
+        <div class="btns">
+          <button
+            type="button" name="send" :disabled="sendDisabled"
+            @click="send"
+          >
+            Envoyer
+          </button>
+          <button type="button" name="remove" @click="deleteRecord">
+            Supprimer
+          </button>
+          <a :href="url" :download="tempFilename" class="btn">
+            Télécharger
+          </a>
+        </div>
+      </div>
+
+      <audio
+        v-if="!sent" ref="audio"
+        :src="url" controls
+      />
+
+      <div v-if="uploadMessage !== null" :class="{ 'skew': styling }">
+        <text-display v-if="uploadMessage" :content="[uploadMessage]" />
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
-
+import content from '@/assets/content.json'
+import TextDisplay from '@/components/TextDisplay'
 
 export default {
   name: 'AudioRecorder',
 
+  components: {
+    TextDisplay
+  },
+
+  props: {
+    styling: { type: Boolean, default: true }
+  },
+
   data () {
     return {
-      canRecord: false,
+      step: null,
+      // Recording
       recording: false,
+      recordTimeoutId: null,
       recorder: null,
-      recordTimeoutId: null
+      blob: null,
+      url: null,
+      // Sending
+      acknowledgment: content.acknowledgment,
+      tempFilename: '',
+      duration: null,
+      uploadMessage: null,
+      sent: false
     }
   },
 
-  computed: mapGetters(['recordDuration']),
+  computed: {
+    ...mapGetters(['recordDuration']),
 
-  created () {
+    sendDisabled () {
+      return this.duration === null
+    }
+  },
+
+  mounted () {
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
       this.ask()
     } else {
@@ -40,38 +94,83 @@ export default {
   methods: {
     ask () {
       navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
-        this.init(stream)
+        this.recorder = new MediaRecorder(stream)
+        this.step = 'record'
+        let chunks = []
+        this.recorder.onstop = () => {
+          this.blob = chunks[0]
+          this.url = window.URL.createObjectURL(this.blob)
+          chunks = []
+          this.tempFilename = new Date().toISOString().split('.')[0].replaceAll(':', '_') + '.ogg'
+          this.step = 'send'
+          this.$nextTick(this.getDuration)
+        }
+        this.recorder.ondataavailable = e => {
+          chunks.push(e.data)
+        }
       }).catch(() => {
         this.$emit('next')
       })
-    },
-
-    init (stream) {
-      this.recorder = new MediaRecorder(stream)
-      this.canRecord = true
-      this.recorder.ondataavailable = ({ data }) => {
-        this.$emit('next', data)
-        clearTimeout(this.recordTimeoutId)
-      }
     },
 
     onRecordClick () {
       if (this.recording) {
         this.stopRecord()
       } else {
-        this.record()
+        this.startRecord()
       }
     },
 
-    record () {
+    startRecord () {
       this.recorder.start()
       this.recording = true
       this.recordTimeoutId = setTimeout(() => this.stopRecord(), this.recordDuration)
     },
 
     stopRecord () {
-      this.recorder.stream.getAudioTracks()[0].stop()
       this.recorder.stop()
+      this.recording = false
+      this.recorder.stream.getAudioTracks()[0].stop()
+    },
+
+    // SENDING
+
+    send () {
+      const data = { blob: this.blob, duration: this.duration } = this
+      this.$store.dispatch('SEND_CONTRIB', data).then(async response => {
+        if (response.ok) {
+          this.uploadMessage = content.success
+        } else {
+          this.uploadMessage = content.error
+        }
+        this.sent = response.ok
+
+        this.$emit('next')
+      })
+    },
+
+    deleteRecord () {
+      this.$emit('next')
+      this.sent = true
+      this.uploadMessage = ''
+    },
+
+    download () {
+      window.open(this.audio.url)
+    },
+
+    async getDuration () {
+      const audio = new Audio(this.url)
+      audio.addEventListener('durationchange', () => {
+        if (audio.duration !== Infinity) {
+          this.duration = audio.duration
+          audio.remove()
+        }
+      }, false)
+      audio.load()
+      audio.volume = 0
+      audio.currentTime = 100
+      audio.play()
     }
   }
 }
@@ -90,7 +189,7 @@ export default {
   }
 }
 
-button {
+.record-btn {
   width: 60px;
   border: none;
   height: 60px;
@@ -103,6 +202,22 @@ button {
   &.animate {
     animation-name: shape, scale;
     animation-fill-mode: both;
+  }
+}
+
+audio {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+}
+.btns {
+  *:not(:last-child) {
+    margin-right: 1rem;
+  }
+  button:disabled {
+    opacity: .5;
+    cursor: auto;
   }
 }
 </style>
