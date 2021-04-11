@@ -6,8 +6,7 @@ load_dotenv(os.path.realpath(os.path.join(basedir, '../app/.env')))
 
 configs = {
     'development': 'api.config.Config',
-    # 'testing': 'app.config.TestingConfig',
-    # 'production': 'app.config.ProdConfig'
+    'production': 'api.config.Config'
 }
 
 
