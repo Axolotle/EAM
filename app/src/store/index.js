@@ -108,11 +108,11 @@ export default new Vuex.Store({
     },
 
     'ON_EPISODE_ENDED' ({ state, commit, dispatch }) {
-      commit('SET_ANIMATION', { from: 'rgba(255, 255, 255, 0)', to: 'rgba(255, 255, 255, 1)', duration: 2000 })
+      commit('SET_ANIMATION', { from: 'rgba(255, 255, 255, 0)', to: 'rgba(255, 255, 255, 1)', duration: 10000 })
       setTimeout(() => {
         dispatch('DEFINE_NEXT_EP')
         dispatch('INIT')
-      }, 2000)
+      }, 10000)
     }
   },
 

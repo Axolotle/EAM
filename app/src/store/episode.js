@@ -50,8 +50,7 @@ export default {
       let nextEpDate = null
       let now = Date.now()
       if (nextEp <= 4) {
-        const delay = (Math.pow((ep + 1) / 4, 1.5) - Math.pow(ep / 4, 1.5)) * state.delayMultiplier
-        nextEpDate = new Date(now + delay * 3600000)
+        nextEpDate = new Date(now + nextEp * 30000)
       } else {
         nextEp = null
         commit('SET_FINISHED', { finished: true, updateState: !temp })
