@@ -1,8 +1,11 @@
 <template>
   <div class="street">
-    <button v-if="cantPlay" @click="cantPlay = false">
-      commencer
-    </button>
+    <div v-if="cantPlay" class="skew container" id="mention">
+      <text-display :content="[['molette pour avancer/reculer']]" />
+      <button @click="cantPlay = false">
+        commencer
+      </button>
+    </div>
     <svg-drawing>
       <!-- BUILDINGS -->
       <g :transform="buildingsTranslation">
@@ -45,13 +48,15 @@
 import { getRandInt, vRotate, getShape } from '@/utils'
 import SvgDrawing from '@/components/SvgDrawing'
 import StreetSound from '@/components/StreetSound'
+import TextDisplay from '@/components/TextDisplay'
 
 export default {
   name: 'Street',
 
   components: {
     SvgDrawing,
-    StreetSound
+    StreetSound,
+    TextDisplay
   },
 
   data () {
@@ -192,6 +197,14 @@ export default {
 ::v-deep {
   line, circle {
     vector-effect: non-scaling-stroke;
+  }
+}
+
+#mention {
+  position: relative;
+  top: -2.5rem;
+  button {
+    margin-top: 2rem;
   }
 }
 </style>
