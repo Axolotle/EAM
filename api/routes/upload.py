@@ -1,7 +1,7 @@
 import os
-import time
+from datetime import datetime
 
-from flask import Blueprint, render_template, request, current_app
+from flask import Blueprint, request, current_app
 
 bp = Blueprint('upload', __name__)
 
@@ -11,7 +11,7 @@ def upload():
     assets_path = os.path.join(current_app.root_path, 'static', 'assets')
     file = request.files.get('file')
     ext = file.mimetype.replace('audio/', '')
-    filename = time.strftime('%Y%m%d-%Hh%Mm%Ss') + '.' + ext
+    filename = datetime.now().strftime("%Y%m%d-%Hh%Mm%Ss%f") + '.' + ext
     filepath = os.path.join(assets_path, 'contributions', filename)
     try:
         assert current_app.config['REFERER'] in request.headers['Referer']
