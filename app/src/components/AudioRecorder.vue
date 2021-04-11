@@ -10,7 +10,7 @@
     />
 
     <div v-if="step === 'send'" class="audio-sender">
-      <div v-if="!sent" :class="{ 'skew': styling }">
+      <div :class="{ 'skew': styling }">
         <text-display v-if="styling" :content="[acknowledgment]" />
 
         <div class="btns">
@@ -29,14 +29,7 @@
         </div>
       </div>
 
-      <audio
-        v-if="!sent" ref="audio"
-        :src="url" controls
-      />
-
-      <div v-if="uploadMessage !== null" :class="{ 'skew': styling }">
-        <text-display v-if="uploadMessage" :content="[uploadMessage]" />
-      </div>
+      <audio ref="audio" :src="url" controls />
     </div>
   </div>
 </template>
@@ -70,8 +63,7 @@ export default {
       acknowledgment: content.acknowledgment,
       tempFilename: '',
       duration: null,
-      uploadMessage: null,
-      sent: false
+      uploadMessage: null
     }
   },
 
@@ -138,14 +130,7 @@ export default {
     send () {
       const data = { blob: this.blob, duration: this.duration } = this
       this.$store.dispatch('SEND_CONTRIB', data).then(async response => {
-        if (response.ok) {
-          this.uploadMessage = content.success
-        } else {
-          this.uploadMessage = content.error
-        }
-        this.sent = response.ok
-
-        this.$emit('next')
+        this.$emit('next', response.ok)
       })
     },
 

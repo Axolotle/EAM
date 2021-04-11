@@ -70,8 +70,11 @@ export default {
       this.$set(contrib, 'player', true)
     },
 
-    onRecordEnded (record) {
-      this.record = record
+    onRecordEnded (sended) {
+      this.key = Math.random()
+      if (sended === false) {
+        window.alert('déso, erreur d\'envoi')
+      }
     }
   }
 }

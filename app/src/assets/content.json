@@ -214,6 +214,11 @@
       "il y a eu un problème lors de l'envoi du message"
     ],
 
+    "next_night": [
+      "tu attends",
+      "que revienne la nuit"
+    ],
+
     "streetIntro": [
         "Tu redescends,",
         "fermes la trappe,",

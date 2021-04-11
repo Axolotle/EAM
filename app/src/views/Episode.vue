@@ -17,6 +17,8 @@
 
     <!-- Display audio recorder -->
     <audio-recorder v-if="step === 'record'" @next="onEpisodeStepsEnded" />
+
+    <text-display v-if="step === 'message'" :content="message" class="skew" />
   </div>
 </template>
 
@@ -42,7 +44,8 @@ export default {
       step: 'intro',
       content: undefined,
       audio: null,
-      record: null
+      record: null,
+      message: ''
     }
   },
 
@@ -85,7 +88,12 @@ export default {
       }
     },
 
-    async onEpisodeStepsEnded () {
+    async onEpisodeStepsEnded (sended) {
+      this.message = [
+        sended !== null ? data[sended ? 'success' : 'error'] : [],
+        data.next_night
+      ]
+      this.step = 'message'
       this.$store.dispatch('ON_EPISODE_ENDED')
       if (this.headphone && this.loop) {
         while (this.loop.volume > 0.05) {
