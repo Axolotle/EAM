@@ -13,10 +13,13 @@
         v-if="recording" :key="key" :styling="false"
         @next="onRecordEnded"
       />
+      <div class="">
+        {{ message }}
+      </div>
       <button
         v-if="recording"
         type="button" name="reset"
-        @click="key = Math.random()"
+        @click="reset"
       >
         Reset
       </button>
@@ -51,7 +54,8 @@ export default {
       record: null,
       recording: false,
       contribs: [],
-      key: Math.random()
+      key: Math.random(),
+      message: ''
     }
   },
 
@@ -70,11 +74,24 @@ export default {
       this.$set(contrib, 'player', true)
     },
 
-    onRecordEnded (sended) {
-      this.key = Math.random()
-      if (sended === false) {
-        window.alert('déso, erreur d\'envoi')
+    onRecordEnded (sended, err) {
+      if (err instanceof DOMException) {
+        this.message = 'déso, erreur du genre "pas detecté de micro" ; ou alors t\'as refusé d\'enregistrer et donc pas déso ; ou encore ton navigateur à sauvegardé le fait que t\'as refusé la dernière fois et réitère automatiquement, moyen déso. Dans le dernier cas il devrait être possible d\'autoriser de nouveau en cliquant sur une des icônes à gauche de la barre d\'adresse du navigateur voire tenter un petit CTRL+MAJ+R. Si c\'est aucune de ces raisons, préviens moi !'
+      } else {
+        if (sended === false) {
+          this.message = 'méga déso, erreur d\'envoi, le serveur est pas content'
+        } else if (sended === true) {
+          this.message = 'envoi réussi, is this real life?'
+        } else if (typeof err === 'string') {
+          this.message = err
+        }
+        this.key = Math.random()
       }
+    },
+
+    reset () {
+      this.key = Math.random()
+      this.message = ''
     }
   }
 }

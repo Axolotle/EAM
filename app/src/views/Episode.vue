@@ -90,7 +90,7 @@ export default {
 
     async onEpisodeStepsEnded (sended) {
       this.message = [
-        sended !== null ? data[sended ? 'success' : 'error'] : [],
+        sended !== undefined ? data[sended ? 'success' : 'error'] : [],
         data.next_night
       ]
       this.step = 'message'

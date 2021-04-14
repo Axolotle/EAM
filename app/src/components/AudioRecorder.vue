@@ -79,7 +79,7 @@ export default {
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
       this.ask()
     } else {
-      this.$emit('next')
+      this.$emit('next', undefined, 'le navigateur ne gère pas l\'enregistrement')
     }
   },
 
@@ -100,8 +100,8 @@ export default {
         this.recorder.ondataavailable = e => {
           chunks.push(e.data)
         }
-      }).catch(() => {
-        this.$emit('next')
+      }).catch(e => {
+        this.$emit('next', undefined, e)
       })
     },
 
@@ -136,7 +136,7 @@ export default {
     },
 
     deleteRecord () {
-      this.$emit('next')
+      this.$emit('next', undefined, 'son supprimé')
       this.sent = true
       this.uploadMessage = ''
     },
