@@ -33,8 +33,11 @@ export default {
         h = maxH
       }
       if (h < 800) {
-        h = maxH
-        w = maxW
+        if (h < w) {
+          w = maxW * 1.5
+        } else {
+          h = maxH * 2
+        }
       }
       return `-${Math.round(w / 2)} -${Math.round(h / 2)} ${w} ${h}`
     }

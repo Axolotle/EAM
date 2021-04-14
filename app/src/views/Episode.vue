@@ -1,5 +1,5 @@
 <template>
-  <div class="episode">
+  <div>
     <span v-if="debug" class="debug">Episode: {{ episode }}</span>
 
     <!-- Display intro -->
