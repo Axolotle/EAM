@@ -1,10 +1,5 @@
 <template>
-  <main id="app" ref="main" class="container">
-    <div v-if="debug" class="debug">
-      <p>next: {{ nextEp }}</p>
-      <p>nextDate: {{ nextEpDate }}</p>
-    </div>
-
+  <main id="app" ref="main">
     <city-background v-if="!['street', 'admin'].includes(component)" />
 
     <component :is="component" v-if="component" />

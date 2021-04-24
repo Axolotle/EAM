@@ -1,24 +1,24 @@
 <template>
-  <div>
-    <span v-if="debug" class="debug">Episode: {{ episode }}</span>
-
+  <div class="container-center">
     <!-- Display intro -->
-    <text-display
-      v-if="step === 'intro'"
-      class="skew episode"
-      :content="content" @next="playEp"
-    />
+    <div class="m-auto text-padding">
+      <text-display
+        v-if="step === 'intro'"
+        class="skew"
+        :content="content" @next="playEp"
+      />
 
 
-    <!-- playEp -->
-    <button v-show="debug && step === 'audio'" @click="skipEpisode">
-      Passer l'épisode
-    </button>
+      <!-- playEp -->
+      <button v-show="debug && step === 'audio'" @click="skipEpisode">
+        Passer l'épisode
+      </button>
 
-    <!-- Display audio recorder -->
-    <audio-recorder v-if="step === 'record'" @next="onEpisodeStepsEnded" />
+      <!-- Display audio recorder -->
+      <audio-recorder v-if="step === 'record'" in-episode @next="onEpisodeStepsEnded" />
 
-    <text-display v-if="step === 'message'" :content="message" class="skew" />
+      <text-display v-if="step === 'message'" :content="message" class="skew" />
+    </div>
   </div>
 </template>
 
@@ -111,6 +111,3 @@ export default {
   }
 }
 </script>
-
-<style>
-</style>

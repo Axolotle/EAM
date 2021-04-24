@@ -1,11 +1,12 @@
 <template>
-  <div class="street">
-    <div v-if="cantPlay" class="skew container" id="mention">
-      <text-display :content="[['molette pour avancer/reculer']]" />
-      <button @click="cantPlay = false">
+  <div class="street container-center">
+    <div v-if="cantPlay" id="mention" class="m-auto text-padding">
+      <text-display class="skew" :content="[['molette pour avancer/reculer']]" />
+      <button class="skew" @click="cantPlay = false">
         commencer
       </button>
     </div>
+
     <svg-drawing>
       <!-- BUILDINGS -->
       <g :transform="buildingsTranslation">
@@ -201,10 +202,13 @@ export default {
 }
 
 #mention {
-  position: relative;
-  top: -2.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
   button {
     margin-top: 2rem;
+    margin-bottom: 3.5rem;
   }
 }
 </style>

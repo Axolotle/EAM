@@ -10,10 +10,11 @@
         Enregistrer
       </button>
       <audio-recorder
-        v-if="recording" :key="key" :styling="false"
+        v-if="recording" :key="key"
+        class="m-b"
         @next="onRecordEnded"
       />
-      <div class="">
+      <div v-if="message" class="m-b">
         {{ message }}
       </div>
       <button
@@ -124,5 +125,9 @@ export default {
       }
     }
   }
+}
+
+.m-b {
+  margin-bottom: 2rem;
 }
 </style>

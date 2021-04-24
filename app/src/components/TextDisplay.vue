@@ -1,7 +1,7 @@
 <template>
-  <div class="text" v-bind="$attrs">
+  <div class="text-display" v-bind="$attrs">
     <p v-for="(paragraph, i) in content" :key="i">
-      <span v-for="(line, j) in paragraph" :key="j" class="alinea">
+      <span v-for="(line, j) in paragraph" :key="j" class="line-padding">
         <template v-if="Array.isArray(line)">
           <template v-for="part in line">
             <span v-if="typeof part === 'string'" :key="part">{{ part }}</span>
@@ -30,16 +30,13 @@ export default {
 <style lang="scss" scoped>
 p {
   margin-top: 0;
-  span {
-    background: $color-grey;
-    padding: 0 2rem;
-    @media (max-width: 500px) {
-      padding: 0 1rem;
-    }
-  }
-}
 
-.alinea {
-  display: block;
+  > span {
+    background: $color-grey;
+  }
+
+  &:last-of-type {
+    margin-bottom: 0;
+  }
 }
 </style>

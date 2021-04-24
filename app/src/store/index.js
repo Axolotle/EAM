@@ -104,7 +104,7 @@ export default new Vuex.Store({
       commit(key, value)
       setTimeout(() => {
         commit('SET_SPLASH', false)
-      }, 300)
+      }, 500)
     },
 
     'ON_EPISODE_ENDED' ({ state, commit, dispatch }) {

@@ -1,107 +1,114 @@
 :root {
   font-family: 'Fira Code';
-  line-height: 1.5;
   font-size: 1rem;
+  line-height: 1.5;
 }
 
 * {
   box-sizing: border-box;
 }
 
-html, body, main {
-  margin: 0;
-  height: 100%;
-  overflow: hidden;
-  color: white;
-}
-
-.fullscreen {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100vw;
+html,
+body,
+main {
+  background-color: transparent;
+  color: $white;
   height: 100vh;
+  margin: 0;
+  overflow: hidden;
+  width: 100%;
 }
 
-.container {
+.container-center {
   display: flex;
-  align-items: center;
-  justify-content: center;
   flex-direction: column;
-}
-
-a, a:visited, a:active, a:focus {
-  color: white;
-}
-
-.text-black {
-  color: black;
-  a, a:visited, a:active, a:focus {
-    color: black;
-  }
-}
-.skew {
-  transform: skewY(-5deg) scale(0.9, 1);
-}
-
-button, .btn {
-  display: inline-block;
-  background-color: $color-red;
-  color: black;
-  height: 2rem;
-  font: inherit;
-  font-size: 1rem;
-  border: none;
-  border-radius: 1rem;
-  padding: .25rem 1rem;
-  cursor: pointer;
-  text-decoration: none;
-  outline: none;
-}
-
-p {
-  font-size: 1rem;
-}
-
-.episode {
-  font-size: 1.65vh;
+  height: 100vh;
   overflow: auto;
-  padding: 1rem 0;
-  max-height: 95vh;
-
-  @media (max-width: 400px) and (min-height: 670) {
-    font-size: 3.5vw;
-  }
+  width: 100%;
 
   scrollbar-width: none;
+
   &::-webkit-scrollbar {
     display: none;
   }
 }
 
+.m-auto {
+  margin: auto;
+}
+
+.skew {
+  transform: skewY(-5deg) scale(.9, 1);
+}
+
+a,
+a:visited,
+a:active,
+a:focus {
+  color: $white;
+}
+
+.text-black {
+  color: $black;
+
+  a,
+  a:visited,
+  a:active,
+  a:focus {
+    color: $black;
+  }
+}
+
+button,
+.btn {
+  background-color: $color-red;
+  border: 0;
+  border-radius: 1rem;
+  color: $black;
+  cursor: pointer;
+  display: inline-block;
+  font: inherit;
+  font-size: 1rem;
+  min-height: 2rem;
+  outline: none;
+  padding: .25rem 1rem;
+  text-decoration: none;
+}
+
+p {
+  font-size: inherit;
+}
+
+.text-padding {
+  padding: 3.631875em 0;
+}
+
+.line-padding {
+  display: block;
+  padding: 0 2rem;
+
+  @media (max-width: 500px) {
+    padding: 0 .5rem;
+  }
+}
+
 .building {
-  opacity: 0.85;
-  fill: black;
+  fill: $black;
+  opacity: .85;
 }
 
 #credits {
   position: absolute;
-  top: .75rem;
   right: 1rem;
-}
-
-.debug {
-  color: blue;
-  font-size: 1rem;
-  display: none;
+  top: 1rem;
 }
 
 @font-face {
   font-family: 'Fira Code';
   src:
-    local('Fira Code Regular'),
-    url('~firacode/distr/woff2/FiraCode-Regular.woff2') format('woff2'),
-    url('~firacode/distr/woff/FiraCode-Regular.woff') format('woff');
+   local('Fira Code Regular'),
+   url('~firacode/distr/woff2/FiraCode-Regular.woff2') format('woff2'),
+   url('~firacode/distr/woff/FiraCode-Regular.woff') format('woff');
   font-weight: 400;
   font-style: normal;
 }

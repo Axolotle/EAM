@@ -1,21 +1,16 @@
 <template>
-  <div id="splash-cont" :class="{ 'hide': hide }" class="fullscreen container">
-    <div id="splash" class="text-black">
-      <div>
-        <div
-          id="title" aria-hidden="true" aria-label="AEM"
-          class="skew"
-        >
+  <div id="splash" :class="{ 'hide': hide }" class="container-center">
+    <div class="m-auto text-padding text-black">
+      <div class="skew line-padding">
+        <div id="title" aria-hidden="true" aria-label="AEM">
           <span>╭─┐┌─╴╭╮╮</span>
           <span>├─┤├─╴│││</span>
           <span>╵ ╵╰─╴╵╵╵</span>
         </div>
-        <p class="skew">
-          une histoire à écouter
-        </p>
+        <p>une histoire à écouter</p>
       </div>
 
-      <p class="skew">
+      <p class="actions line-padding skew">
         <template v-if="finished && nextEp === null">
           <button type="button" name="reset" @click="$store.dispatch('RESET_EPISODE')">
             recommencer
@@ -43,10 +38,11 @@
         </button>
       </p>
 
-      <p>
-        <span class="skew">pièce sonore : Basile Touratier</span>
-        <span class="skew">texte fiction : Léo Henry</span>
-        <span class="skew">design & code : Nicolas Chesnais</span>
+      <p class="skew line-padding">
+        la voix : Maë<br>
+        pièce sonore : Basile Touratier<br>
+        texte fiction : Léo Henry<br>
+        design & code : Nicolas Chesnais
       </p>
     </div>
   </div>
@@ -79,18 +75,18 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-#splash-cont {
-  background-color: white;
-}
-
 #splash {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  min-height: 50vh;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: $white;
 }
 
-span {
+.actions {
+  margin: 10vh 0;
+}
+
+#title span {
   display: block;
 }
 
@@ -108,7 +104,7 @@ button {
   }
 }
 .hide {
-  animation: opacity .3s linear;
+  animation: opacity .5s linear;
   animation-fill-mode: both;
 }
 

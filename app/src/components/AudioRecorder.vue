@@ -9,27 +9,25 @@
       @click="onRecordClick"
     />
 
-    <div v-if="step === 'send'" class="audio-sender">
-      <div :class="{ 'skew': styling }">
-        <text-display v-if="styling" :content="[acknowledgment]" />
-
-        <div class="btns">
-          <button
-            type="button" name="send" :disabled="sendDisabled"
-            @click="send"
-          >
-            Envoyer
-          </button>
-          <button type="button" name="remove" @click="deleteRecord">
-            Supprimer
-          </button>
-          <a :href="url" :download="tempFilename" class="btn">
-            Télécharger
-          </a>
-        </div>
-      </div>
+    <div v-if="step === 'send'" class="audio-sender skew">
+      <text-display v-if="inEpisode" :content="[acknowledgment]" />
 
       <audio ref="audio" :src="url" controls />
+
+      <div class="btns">
+        <button
+          type="button" name="send" :disabled="sendDisabled"
+          @click="send"
+        >
+          Envoyer
+        </button>
+        <button type="button" name="remove" @click="deleteRecord">
+          Supprimer
+        </button>
+        <a :href="url" :download="tempFilename" class="btn">
+          Télécharger
+        </a>
+      </div>
     </div>
   </div>
 </template>
@@ -47,7 +45,7 @@ export default {
   },
 
   props: {
-    styling: { type: Boolean, default: true }
+    inEpisode: { type: Boolean, default: false }
   },
 
   data () {
@@ -192,15 +190,23 @@ export default {
 }
 
 audio {
-  position: absolute;
-  bottom: 0;
-  left: 0;
+  display: block;
   width: 100%;
+  margin: 1rem 0;
 }
+
 .btns {
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: wrap;
   *:not(:last-child) {
-    margin-right: 1rem;
+    margin-right: .5rem;
   }
+
+  button {
+    margin-bottom: .5rem;
+  }
+
   button:disabled {
     opacity: .5;
     cursor: auto;
