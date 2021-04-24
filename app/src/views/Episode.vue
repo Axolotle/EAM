@@ -15,7 +15,7 @@
       </button>
 
       <!-- Display audio recorder -->
-      <audio-recorder v-if="step === 'record'" in-episode @next="onEpisodeStepsEnded" />
+      <audio-recorder v-if="step === 'record'" episode @next="onEpisodeStepsEnded" />
 
       <text-display v-if="step === 'message'" :content="message" class="skew" />
     </div>

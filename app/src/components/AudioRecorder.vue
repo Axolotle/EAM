@@ -9,24 +9,43 @@
       @click="onRecordClick"
     />
 
-    <div v-if="step === 'send'" class="audio-sender skew">
-      <text-display v-if="inEpisode" :content="[acknowledgment]" />
+    <div v-if="step === 'send'" class="audio-sender" :class="{ 'skew': episode || testing }">
+      <text-display v-if="episode" :content="[acknowledgment]" />
 
       <audio ref="audio" :src="url" controls />
 
       <div class="btns">
+        <template v-if="episode || admin">
+          <button
+            type="button" name="send" :disabled="sendDisabled"
+            @click="send"
+          >
+            envoyer
+          </button>
+          <button type="button" name="remove" @click="deleteRecord">
+            supprimer
+          </button>
+          <a
+            v-if="!testing"
+            :href="url" :download="tempFilename" class="btn"
+          >
+            télécharger
+          </a>
+        </template>
+
         <button
-          type="button" name="send" :disabled="sendDisabled"
-          @click="send"
+          v-if="testing"
+          type="button" name="remove" @click="deleteRecord"
         >
-          Envoyer
+          ça marche
         </button>
-        <button type="button" name="remove" @click="deleteRecord">
-          Supprimer
+
+        <button
+          v-if="testing || admin"
+          type="button" name="remove" @click="reset"
+        >
+          recommencer
         </button>
-        <a :href="url" :download="tempFilename" class="btn">
-          Télécharger
-        </a>
       </div>
     </div>
   </div>
@@ -45,7 +64,9 @@ export default {
   },
 
   props: {
-    inEpisode: { type: Boolean, default: false }
+    episode: { type: Boolean, default: false },
+    testing: { type: Boolean, default: false },
+    admin: { type: Boolean, default: false }
   },
 
   data () {
@@ -104,6 +125,7 @@ export default {
     },
 
     onRecordClick () {
+      this.$emit('click')
       if (this.recording) {
         this.stopRecord()
         clearTimeout(this.recordTimeoutId)
@@ -135,8 +157,11 @@ export default {
 
     deleteRecord () {
       this.$emit('next', undefined, 'son supprimé')
-      this.sent = true
       this.uploadMessage = ''
+    },
+
+    reset () {
+      this.ask()
     },
 
     download () {

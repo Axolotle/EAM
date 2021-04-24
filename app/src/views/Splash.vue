@@ -1,7 +1,7 @@
 <template>
   <div id="splash" :class="{ 'hide': hide }" class="container-center">
     <div class="m-auto text-padding text-black">
-      <div class="skew line-padding">
+      <div class="skew line-padding m-b-vh">
         <div id="title" aria-hidden="true" aria-label="AEM">
           <span>╭─┐┌─╴╭╮╮</span>
           <span>├─┤├─╴│││</span>
@@ -10,7 +10,24 @@
         <p>une histoire à écouter</p>
       </div>
 
-      <p class="actions line-padding skew">
+      <div v-if="!finished" class="line-padding">
+        <p v-if="test !== false" class="skew">
+          il vous sera proposé d'enregistrer quelque chose, <br>
+          vérifiez que votre micro soit branché <br>
+          et faites éventuellement un test :
+          <button v-if="test === null" type="button" @click="test = true">
+            tester un enregistrement
+          </button>
+        </p>
+
+        <audio-recorder
+          v-if="test" testing
+          class=""
+          @next="test = false"
+        />
+      </div>
+
+      <p class="line-padding m-t-vh skew">
         <template v-if="finished && nextEp === null">
           <button type="button" name="reset" @click="$store.dispatch('RESET_EPISODE')">
             recommencer
@@ -38,8 +55,8 @@
         </button>
       </p>
 
-      <p class="skew line-padding">
-        la voix : Maë<br>
+      <p class="skew line-padding m-t-vh">
+        voix : Maë<br>
         pièce sonore : Basile Touratier<br>
         texte fiction : Léo Henry<br>
         design & code : Nicolas Chesnais
@@ -50,14 +67,20 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import AudioRecorder from '@/components/AudioRecorder'
 
 
 export default {
   name: 'Splash',
 
+  components: {
+    AudioRecorder
+  },
+
   data () {
     return {
-      hide: false
+      hide: false,
+      test: null
     }
   },
 
@@ -82,8 +105,11 @@ export default {
   background-color: $white;
 }
 
-.actions {
-  margin: 10vh 0;
+.m-b-vh {
+  margin-bottom: 5vh;
+}
+.m-t-vh {
+  margin-top: 5vh;
 }
 
 #title span {
@@ -108,7 +134,8 @@ button {
   animation-fill-mode: both;
 }
 
-#street-btn {
-  margin-top: 2rem;
+::v-deep .record-btn {
+  margin-left: 2rem;
+  margin-top: 1rem;
 }
 </style>

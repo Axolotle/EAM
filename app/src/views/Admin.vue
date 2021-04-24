@@ -12,18 +12,13 @@
       <audio-recorder
         v-if="recording" :key="key"
         class="m-b"
+        admin
         @next="onRecordEnded"
+        @click="message = ''"
       />
       <div v-if="message" class="m-b">
         {{ message }}
       </div>
-      <button
-        v-if="recording"
-        type="button" name="reset"
-        @click="reset"
-      >
-        Reset
-      </button>
     </div>
 
     <h1>Enregistrements</h1>
@@ -61,16 +56,20 @@ export default {
   },
 
   created () {
-    const data = []
-    this.$store.dispatch('GET_CONTRIBS').then(contribs => {
-      for (const contrib of contribs) {
-        data.push({ filename: contrib, src: '/static/assets/contributions/' + contrib, player: false })
-      }
-      this.contribs = data.reverse()
-    })
+    this.getRecords()
   },
 
   methods: {
+    getRecords () {
+      const data = []
+      this.$store.dispatch('GET_CONTRIBS').then(contribs => {
+        for (const contrib of contribs) {
+          data.push({ filename: contrib, src: '/static/assets/contributions/' + contrib, player: false })
+        }
+        this.contribs = data.reverse()
+      })
+    },
+
     play (contrib) {
       this.$set(contrib, 'player', true)
     },
@@ -83,8 +82,11 @@ export default {
           this.message = 'méga déso, erreur d\'envoi, le serveur est pas content'
         } else if (sended === true) {
           this.message = 'envoi réussi, is this real life?'
+          this.getRecords()
         } else if (typeof err === 'string') {
           this.message = err
+        } else {
+          this.message = ''
         }
         this.key = Math.random()
       }
@@ -107,23 +109,6 @@ export default {
 
   & > div {
     margin-top: 1.5rem;
-  }
-
-  ::v-deep {
-    .audio-sender audio {
-      margin: 1rem 0;
-      position: static;
-      width: 100%;
-    }
-
-    .skew {
-      transform: none;
-      .text span {
-        color: black;
-        background-color: inherit;
-        padding: 0;
-      }
-    }
   }
 }
 
