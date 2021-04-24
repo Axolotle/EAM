@@ -16,5 +16,7 @@ class Config:
 
     # Custom
     UPLOAD_ROUTE = os.getenv('UPLOAD_ROUTE', '/upload')
+    REMOVE_ROUTE = os.getenv('VUE_APP_REMOVE_ROUTE')
     REFERER = os.getenv('REFERER')
+    ADMIN_PS = os.getenv('FLASK_ADMIN_PS')
     PS = os.getenv('VUE_APP_PS')
