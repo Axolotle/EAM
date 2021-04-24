@@ -163,7 +163,8 @@ export default {
     },
 
     async switchAudio (contrib) {
-      contrib.audio = await this.dispenser.next()
+      const audio = await this.dispenser.next()
+      contrib.audio = audio
     },
 
     animate (dir) {
@@ -176,9 +177,11 @@ export default {
       if (dir === -1 && last.x < start) {
         last.x = getRandInt((this.contribs[len].x + 2) * 10, (end + 5) * 10) / 10
         this.contribs.push(this.contribs.shift())
+        this.switchAudio(this.contribs[this.contribs.length - 1])
       } else if (dir === 1 && last.x > end) {
         last.x = getRandInt((start - 5) * 10, (this.contribs[0].x - 2) * 10) / 10
         this.contribs.unshift(this.contribs.pop())
+        this.switchAudio(this.contribs[0])
       }
 
       // Update buildings position

@@ -28,6 +28,12 @@ export default {
     r: { type: Number, default: 2 }
   },
 
+  data () {
+    return {
+      read: false
+    }
+  },
+
   computed: {
     pos () {
       const { x, y, v } = this
@@ -48,7 +54,9 @@ export default {
   methods: {
     start () {
       this.audio.play()
-      this.audio.addEventListener('ended', () => this.$emit('ended'))
+      this.audio.addEventListener('ended', () => {
+        this.read = true
+      })
     },
 
     updateVolume () {
@@ -57,11 +65,12 @@ export default {
       let distanceFromCenter = Math.abs(x)
       if (distanceFromCenter <= r) {
         distanceFromCenter = Math.abs(Math.hypot(pos.x, pos.y) / 100)
-        if (this.audio.paused) {
+        if (this.audio.paused && this.read === false) {
           this.start()
         }
         volume = easeInOutQuad(1 - distanceFromCenter / r)
       }
+      if (volume === 0) this.read = false
       this.audio.volume = volume
     }
   }

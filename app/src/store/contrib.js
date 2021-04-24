@@ -41,7 +41,7 @@ export default {
 
     'GET_CONTRIBS' ({ state, commit }) {
       return fetch('api/contributions').then(resp => resp.json()).then(contribs => {
-        commit('SET_CONTRIBS', contribs.contribs)
+        commit('SET_CONTRIBS', contribs.contribs.reverse())
         return state.contribs
       })
     },
