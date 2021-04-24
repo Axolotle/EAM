@@ -30,6 +30,15 @@ export default {
       })
     },
 
+    'REMOVE_CONTRIB' (store, filename) {
+      const data = new FormData()
+      data.append('filename', filename)
+      data.append('ps', localStorage.getItem('ps'))
+      return fetch('/api' + process.env.VUE_APP_REMOVE_ROUTE + '/', { method: 'DELETE', body: data }).then(response => {
+        return response.ok
+      })
+    },
+
     'GET_CONTRIBS' ({ state, commit }) {
       return fetch('api/contributions').then(resp => resp.json()).then(contribs => {
         commit('SET_CONTRIBS', contribs.contribs)

@@ -31,6 +31,9 @@
         v-else :src="contrib.src"
         controls autoplay
       />
+      <button v-if="canRemove" class="ml" @click="remove(contrib)">
+        Supprimer
+      </button>
     </div>
   </div>
 </template>
@@ -55,6 +58,12 @@ export default {
     }
   },
 
+  computed: {
+    canRemove () {
+      return localStorage.getItem('ps') !== null
+    }
+  },
+
   created () {
     this.getRecords()
   },
@@ -72,6 +81,14 @@ export default {
 
     play (contrib) {
       this.$set(contrib, 'player', true)
+    },
+
+    remove (contrib) {
+      if (window.confirm('sûr de sûr ?')) {
+        this.$store.dispatch('REMOVE_CONTRIB', contrib.filename).then(ok => {
+          if (ok) this.getRecords()
+        })
+      }
     },
 
     onRecordEnded (sended, err) {
@@ -114,5 +131,9 @@ export default {
 
 .m-b {
   margin-bottom: 2rem;
+}
+
+.ml {
+  margin-left: .5rem;
 }
 </style>

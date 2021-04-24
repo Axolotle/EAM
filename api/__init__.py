@@ -4,7 +4,7 @@ import threading
 from flask import Flask
 
 from .config import configs
-from .routes import home, upload
+from .routes import home, upload, remove
 from .commands import admin_cli
 
 
@@ -28,3 +28,4 @@ def register_commands(app):
 def register_blueprints(app):
     app.register_blueprint(home.bp)
     app.register_blueprint(upload.bp, url_prefix=app.config['UPLOAD_ROUTE'])
+    app.register_blueprint(remove.bp, url_prefix=app.config['REMOVE_ROUTE'])
