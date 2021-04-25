@@ -75,7 +75,7 @@ export default {
         for (const contrib of contribs) {
           data.push({ filename: contrib, src: '/static/assets/contributions/' + contrib, player: false })
         }
-        this.contribs = data.reverse()
+        this.contribs = data
       })
     },
 
@@ -92,21 +92,21 @@ export default {
     },
 
     onRecordEnded (sended, err) {
-      if (err instanceof DOMException) {
-        this.message = 'déso, erreur du genre "pas detecté de micro" ; ou alors t\'as refusé d\'enregistrer et donc pas déso ; ou encore ton navigateur à sauvegardé le fait que t\'as refusé la dernière fois et réitère automatiquement, moyen déso. Dans le dernier cas il devrait être possible d\'autoriser de nouveau en cliquant sur une des icônes à gauche de la barre d\'adresse du navigateur voire tenter un petit CTRL+MAJ+R. Si c\'est aucune de ces raisons, préviens moi !'
+      if (err === 'no_micro') {
+        this.message = 'déso, erreur du genre "pas detecté de micro" ; ou alors t\'as refusé d\'enregistrer et donc pas déso ; ou encore ton navigateur à sauvegardé le fait que t\'as refusé la dernière fois et réitère automatiquement, moyen déso. Dans le dernier cas il devrait être possible d\'autoriser de nouveau en cliquant sur une des icônes à gauche de la barre d\'adresse du navigateur voire tenter un petit CTRL+MAJ+R (rechargement++). Si c\'est aucune de ces raisons, préviens moi !'
+      } else if (err === 'navigator') {
+        this.message = 'déso, le navigateur gère pas l\'enregistrement audio'
+      } else if (sended === false) {
+        this.message = 'déso, erreur d\'envoi (serveur)'
+      } else if (sended === true) {
+        this.message = 'envoi réussi'
+        this.getRecords()
+      } else if (typeof err === 'string') {
+        this.message = err
       } else {
-        if (sended === false) {
-          this.message = 'méga déso, erreur d\'envoi, le serveur est pas content'
-        } else if (sended === true) {
-          this.message = 'envoi réussi, is this real life?'
-          this.getRecords()
-        } else if (typeof err === 'string') {
-          this.message = err
-        } else {
-          this.message = ''
-        }
-        this.key = Math.random()
+        this.message = ''
       }
+      this.key = Math.random()
     },
 
     reset () {

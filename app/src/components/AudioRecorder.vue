@@ -98,7 +98,7 @@ export default {
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
       this.ask()
     } else {
-      this.$emit('next', undefined, 'le navigateur ne gère pas l\'enregistrement')
+      this.$emit('next', undefined, 'navigator')
     }
   },
 
@@ -120,7 +120,7 @@ export default {
           chunks.push(e.data)
         }
       }).catch(e => {
-        this.$emit('next', undefined, e)
+        this.$emit('next', undefined, 'no_micro')
       })
     },
 

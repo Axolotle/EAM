@@ -11,11 +11,10 @@
       </div>
 
       <div v-if="!finished" class="line-padding">
-        <p v-if="test !== false" class="skew">
-          il vous sera proposé d'enregistrer quelque chose, <br>
-          vérifiez que votre micro soit branché <br>
-          et faites éventuellement un test :
-          <button v-if="test === null" type="button" @click="test = true">
+        <p class="skew" v-html="message" />
+
+        <p v-if="test === null" class="skew">
+          <button type="button" @click="test = true">
             tester un enregistrement
           </button>
         </p>
@@ -23,7 +22,7 @@
         <audio-recorder
           v-if="test" testing
           class=""
-          @next="test = false"
+          @next="onRecordEnded"
         />
       </div>
 
@@ -80,7 +79,9 @@ export default {
   data () {
     return {
       hide: false,
-      test: null
+      test: null,
+      reload: false,
+      message: 'il vous sera proposé d\'enregistrer des messages,<br>vérifiez que votre micro est branché,<br>puis faites éventuellement un test :'
     }
   },
 
@@ -92,6 +93,28 @@ export default {
     run (data) {
       this.hide = true
       this.$store.dispatch('ON_SPLASH_SCREEN_CLOSED', data)
+    },
+
+    onRecordEnded (sended, err) {
+      if (err === 'no_micro') {
+        if (this.message === 'pas de micro trouvé/autorisé') {
+          this.message = 'Tentez de recharger la page (F5) et réessayez'
+          this.test = false
+        } else {
+          this.message = 'pas de micro trouvé/autorisé'
+          this.test = null
+        }
+      } else if (err === 'navigator') {
+        this.message = 'le navigateur ne peut pas enregistrer d\'audio'
+        this.test = false
+      } else {
+        this.test = false
+        this.message = ''
+      }
+    },
+
+    onReload () {
+      window.location.reload()
     }
   }
 }
