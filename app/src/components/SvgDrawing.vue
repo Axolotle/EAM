@@ -34,7 +34,7 @@ export default {
       }
       if (h < 800) {
         if (h < w) {
-          w = maxW * 1.5
+          w = maxW * 1.05
         } else {
           h = maxH * 2
         }
@@ -65,7 +65,7 @@ export default {
 svg {
   z-index: -1;
   width: 100vw;
-  height: 100vh;
+  height: 100%;
   position: absolute;
   top: 0;
   left: 0;
